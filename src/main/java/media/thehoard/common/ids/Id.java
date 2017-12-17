@@ -1,13 +1,9 @@
-/**
- * 
- */
 package media.thehoard.common.ids;
 
-import java.security.SecureRandom;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
-import org.apache.commons.text.RandomStringGenerator.Builder;
-import org.apache.maven.shared.utils.StringUtils;
+
+import java.security.SecureRandom;
 
 /**
  * @author Michael Haas
@@ -17,7 +13,7 @@ public class Id {
 	private String id;
 
 	private Id(IdType idType, int combinationType, int combinationLength) {
-		Builder generatorBuilder = new RandomStringGenerator.Builder();
+		RandomStringGenerator.Builder generatorBuilder = new RandomStringGenerator.Builder();
 		generatorBuilder.withinRange('0', 'z');
 
 		switch (combinationType) {
@@ -29,12 +25,13 @@ public class Id {
 			break;
 		case CombinationType.AdjectiveAdjectiveAnimal:
 			SecureRandom random = new SecureRandom();
-			StringBuilder builder = new StringBuilder();
+			String builder = StringUtils
+					.capitalize(IdAssets.adjectives[Math.abs(random.nextInt() % IdAssets.adjectives.length)]) +
+					StringUtils
+							.capitalize(IdAssets.adjectives[Math.abs(random.nextInt() % IdAssets.adjectives.length)]) +
+					StringUtils.capitalize(IdAssets.animals[Math.abs(random.nextInt() % IdAssets.animals.length)]);
 			// The modulus wraps numbers greater than the array length.
-			builder.append(StringUtils.capitalise(IdAssets.adjectives[Math.abs(random.nextInt() % IdAssets.adjectives.length)]));
-			builder.append(StringUtils.capitalise(IdAssets.adjectives[Math.abs(random.nextInt() % IdAssets.adjectives.length)]));
-			builder.append(StringUtils.capitalise(IdAssets.animals[Math.abs(random.nextInt() % IdAssets.animals.length)]));
-			this.id = builder.toString();
+			this.id = builder;
 			// XXX This ends the constructor, so consider that for future modifications of
 			// this.
 			return;

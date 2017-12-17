@@ -17,13 +17,13 @@ public class DatabaseConnector {
 		connectionPool = new BasicDataSource();
 		// TODO Allow dynamic choices here
 		connectionPool.setDriverClassName("com.mysql.jdbc.Driver");
-		connectionPool.setUrl(String.format("jdbc:mysql://%s:%d/%s?verifyServerCertificate=false&useSSL=true", Configuration.getDatabaseIp(), Configuration.getDatabasePort(),
-				Configuration.getDatabaseSchema()));
-		connectionPool.setUsername(Configuration.getDatabaseUser());
-		connectionPool.setPassword(Configuration.getDatabasePassword());
-		connectionPool.setInitialSize(Configuration.getConnectionPoolInitial());
-		connectionPool.setMaxTotal(Configuration.getConnectionPoolMax());
-		connectionPool.setMaxIdle(Configuration.getConnectionPoolMaxIdle());
+		connectionPool.setUrl(String.format("jdbc:mysql://%s:%d/%s?verifyServerCertificate=false&useSSL=true", Configuration.contents().getDatabaseInfo().getDatabaseIp(), Configuration.contents().getDatabaseInfo().getDatabasePort(),
+				Configuration.contents().getDatabaseInfo().getDatabaseSchema()));
+		connectionPool.setUsername(Configuration.contents().getDatabaseInfo().getDatabaseUser());
+		connectionPool.setPassword(Configuration.contents().getDatabaseInfo().getDatabasePassword());
+		connectionPool.setInitialSize(Configuration.contents().getDatabaseInfo().getConnectionPoolInitial());
+		connectionPool.setMaxTotal(Configuration.contents().getDatabaseInfo().getConnectionPoolMax());
+		connectionPool.setMaxIdle(Configuration.contents().getDatabaseInfo().getConnectionPoolMaxIdle());
 	}
 
 	/**

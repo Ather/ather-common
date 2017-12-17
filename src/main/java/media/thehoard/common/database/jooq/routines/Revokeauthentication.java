@@ -6,8 +6,6 @@ package media.thehoard.common.database.jooq.routines;
 
 import javax.annotation.Generated;
 
-import media.thehoard.hoardmediaserver.common.database.jooq.Thehoard;
-
 import org.jooq.Field;
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;

@@ -7,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import media.thehoard.hoardmediaserver.core.notifier.Log;
-
 //Deprecated because this is being replaced by a better exception system.
 @Deprecated
 public class ExceptionBuilder extends Exception {
@@ -114,11 +112,14 @@ public class ExceptionBuilder extends Exception {
 	 * @return The string corresponding to the inputed level.
 	 */
 	private String getLogLevel(int logLevel) {
+		/*
 		if (logLevel == Log.INFO)
 			return "Info";
 		else if (logLevel == Log.WARN)
 			return "Warn";
 		else
 			return "Error";
+			*/
+		return null;
 	}
 }

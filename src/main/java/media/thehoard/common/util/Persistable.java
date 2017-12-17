@@ -12,8 +12,8 @@ import org.jooq.Field;
  *
  */
 public interface Persistable {
-	public void load();
-	public boolean persist();
-	public <T> Future<Boolean> persistField(Field<T> field, T value);
-	public void delete();
+	void load();
+	boolean persist();
+	<T> Future<Boolean> persistField(Field<T> field, T value);
+	void delete();
 }

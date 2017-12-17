@@ -92,8 +92,8 @@ public class ProviderCache {
 	}
 
 	private static ProviderFile<?, ?, ?, ?, ?, ?> loadFile(UUID key) {
-		try {
-			Record rs = DSL.using(DatabaseConnector.getConnection(), Configuration.getSqlDialect())
+		try (Connection conn = DatabaseConnector.getConnection()) {
+			Record rs = DSL.using(DatabaseConnector.getConnection(), Configuration.contents().getDatabaseInfo().getSqlDialect())
 					.select(PROVIDERFILES.PROVIDERUUID).from(PROVIDERFILES)
 					.where(PROVIDERFILES.UUID.eq(key.toString())).fetchOne();
 
@@ -107,7 +107,7 @@ public class ProviderCache {
 					}
 				}
 			}
-		} catch (DataAccessException e) {
+		} catch (DataAccessException|SQLException e) {
 			PROVIDER_CACHE_LOGGER.error("Failed to load provider into cache: " + key.toString(), e);
 		}
 

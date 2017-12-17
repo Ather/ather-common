@@ -6,8 +6,6 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
-import media.thehoard.hoardmediaserver.common.database.jooq.tables.Servers;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;

@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
-import media.thehoard.hoardmediaserver.common.database.jooq.tables.Authentication;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record7;

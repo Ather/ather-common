@@ -3,28 +3,6 @@
  */
 package media.thehoard.common.providers.generic;
 
-import static media.thehoard.common.database.jooq.Tables.PROVIDERS;
-import static media.thehoard.common.util.ThreadManager.PRIMARY_THREAD_POOL;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.UUID;
-import java.util.concurrent.Future;
-
-import media.thehoard.common.providers.generic.service.ProviderService;
-import org.jooq.Field;
-import org.jooq.Record;
-import org.jooq.UpdateSetMoreStep;
-import org.jooq.exception.DataAccessException;
-import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.api.client.util.IOUtils;
-import com.google.gson.reflect.TypeToken;
-
 import media.thehoard.common.configuration.Configuration;
 import media.thehoard.common.database.DatabaseConnector;
 import media.thehoard.common.database.jooq.tables.records.ProvidersRecord;
@@ -33,9 +11,26 @@ import media.thehoard.common.providers.generic.authorization.ProviderAuthorizati
 import media.thehoard.common.providers.generic.authorization.ProviderCredential;
 import media.thehoard.common.providers.generic.models.ProviderFile;
 import media.thehoard.common.providers.generic.models.ProviderFile.FileType;
+import media.thehoard.common.providers.generic.service.ProviderService;
 import media.thehoard.common.util.Persistable;
 import media.thehoard.common.util.gson.GsonUtil;
 import media.thehoard.common.util.hashes.HashType;
+import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.UpdateSetMoreStep;
+import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.UUID;
+import java.util.concurrent.Future;
+
+import static media.thehoard.common.database.jooq.Tables.PROVIDERS;
+import static media.thehoard.common.util.ThreadManager.PRIMARY_THREAD_POOL;
 
 /**
  * @author Michael Haas
@@ -203,7 +198,7 @@ public abstract class Provider<
 			if (this.isPersisted) {
 				PROVIDER_LOGGER.info("Updating provider: " + this.uuid.toString());
 				UpdateSetMoreStep<ProvidersRecord> updateQuery = DSL
-						.using(DatabaseConnector.getConnection(), Configuration.getSqlDialect()).update(PROVIDERS)
+						.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERS)
 						.set(PROVIDERS.UUID, this.uuid.toString());
 				updateQuery.set(PROVIDERS.TYPEID, this.typeId);
 				updateQuery.set(PROVIDERS.USAGEID, this.usageId);
@@ -220,7 +215,7 @@ public abstract class Provider<
 				if (conn != null) conn.close();
 			} else {
 				PROVIDER_LOGGER.info("Inserting provider: " + this.uuid.toString());
-				DSL.using(DatabaseConnector.getConnection(), Configuration.getSqlDialect()).insertInto(PROVIDERS)
+				DSL.using(Configuration.getJooqConfiguration(conn)).insertInto(PROVIDERS)
 						.columns(PROVIDERS.ALIAS, PROVIDERS.CONFIGURATION, PROVIDERS.CREDENTIAL, PROVIDERS.PROVIDERALIAS, PROVIDERS.STATUS,
 						         PROVIDERS.TYPEID, PROVIDERS.USAGEID, PROVIDERS.UUID)
 						.values(this.alias, GsonUtil.getPrettyGson().toJson(this.configuration), GsonUtil

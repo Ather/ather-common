@@ -3,10 +3,9 @@
  */
 package media.thehoard.common.json;
 
+import media.thehoard.common.util.gson.GsonUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import media.thehoard.hoardmediaserver.common.util.gson.GsonUtil;
 
 /**
  * @author Michael Haas

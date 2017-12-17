@@ -68,7 +68,7 @@ public class DriveFile extends ProviderFile<DriveAuthorization, DriveConfigurati
 	}
 
 	/**
-	 * @param parents
+	 * @param parentIds
 	 * @return
 	 */
 	private List<ProviderFileRelationship> generateParentFiles(List<String> parentIds) {
