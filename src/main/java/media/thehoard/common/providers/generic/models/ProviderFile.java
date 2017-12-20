@@ -461,7 +461,7 @@ public abstract class ProviderFile<
 	}
 
 	/**
-	 * @param parentFile
+	 * @param parentFileRelationships
 	 *            the parentFile to set
 	 */
 	public synchronized FileClass setParentFiles(List<ProviderFileRelationship> parentFileRelationships) {
@@ -572,7 +572,7 @@ public abstract class ProviderFile<
 	}
 
 	/**
-	 * @param parentFile
+	 * @param parentFileRelationships
 	 *            the parentFile to set
 	 */
 	public synchronized FileClass persistParentFiles(List<ProviderFileRelationship> parentFileRelationships) {
