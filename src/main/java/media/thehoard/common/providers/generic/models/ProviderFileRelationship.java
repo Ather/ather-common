@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import media.thehoard.common.configuration.HoardConfiguration;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.UpdateSetMoreStep;
@@ -19,7 +20,6 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import media.thehoard.common.configuration.Configuration;
 import media.thehoard.common.database.DatabaseConnector;
 import media.thehoard.common.database.jooq.tables.records.ProviderfilerelationshipsRecord;
 import media.thehoard.common.providers.ProviderCache;
@@ -67,7 +67,8 @@ public class ProviderFileRelationship implements Persistable {
 	@Override
 	public synchronized void load() {
 		try (Connection conn = DatabaseConnector.getConnection()) {
-			Record rs = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERFILERELATIONSHIPS.ID).from(PROVIDERFILERELATIONSHIPS)
+			Record rs = DSL.using(HoardConfiguration
+					                      .getJooqConfiguration(conn)).select(PROVIDERFILERELATIONSHIPS.ID).from(PROVIDERFILERELATIONSHIPS)
 					.where(PROVIDERFILERELATIONSHIPS.FILEUUID.eq(this.fileUuid.toString()).and(PROVIDERFILERELATIONSHIPS.PARENTUUID.eq(this.parentUuid.toString()))).fetchOne();
 
 			if (rs != null) {
@@ -86,14 +87,15 @@ public class ProviderFileRelationship implements Persistable {
 	public boolean persist() {
 		try (Connection conn = DatabaseConnector.getConnection()) {
 			if (this.isPersisted) {
-				UpdateSetMoreStep<ProviderfilerelationshipsRecord> updateQuery = DSL.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERFILERELATIONSHIPS)
+				UpdateSetMoreStep<ProviderfilerelationshipsRecord> updateQuery = DSL.using(HoardConfiguration
+						                                                                           .getJooqConfiguration(conn)).update(PROVIDERFILERELATIONSHIPS)
 						.set(PROVIDERFILERELATIONSHIPS.FILEUUID, this.fileUuid.toString());
 				updateQuery.set(PROVIDERFILERELATIONSHIPS.PARENTUUID, this.parentUuid.toString());
 
 				updateQuery.where(PROVIDERFILERELATIONSHIPS.ID.eq(this.databaseId)).execute();
 				conn.close();
 			} else {
-				DSL.using(Configuration.getJooqConfiguration(conn)).insertInto(PROVIDERFILERELATIONSHIPS)
+				DSL.using(HoardConfiguration.getJooqConfiguration(conn)).insertInto(PROVIDERFILERELATIONSHIPS)
 						.columns(PROVIDERFILERELATIONSHIPS.FILEUUID, PROVIDERFILERELATIONSHIPS.PARENTUUID).values(this.fileUuid.toString(), this.parentUuid.toString()).execute();
 				conn.close();
 				load();
@@ -114,7 +116,8 @@ public class ProviderFileRelationship implements Persistable {
 				return persist();
 
 			try (Connection conn = DatabaseConnector.getConnection()) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERFILERELATIONSHIPS).set(field, value)
+				DSL.using(HoardConfiguration
+						          .getJooqConfiguration(conn)).update(PROVIDERFILERELATIONSHIPS).set(field, value)
 						.where(PROVIDERFILERELATIONSHIPS.ID.eq(this.databaseId)).execute();
 
 				ProviderCache.providerFileRelationships().invalidate(this.fileUuid);
@@ -131,7 +134,8 @@ public class ProviderFileRelationship implements Persistable {
 	public void delete() {
 		try (Connection conn = DatabaseConnector.getConnection()) {
 			if (this.isPersisted) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).deleteFrom(PROVIDERFILERELATIONSHIPS).where(PROVIDERFILERELATIONSHIPS.ID.eq(this.databaseId)).execute();
+				DSL.using(HoardConfiguration
+						          .getJooqConfiguration(conn)).deleteFrom(PROVIDERFILERELATIONSHIPS).where(PROVIDERFILERELATIONSHIPS.ID.eq(this.databaseId)).execute();
 				ProviderCache.providerFileRelationships().invalidate(this.fileUuid);
 			}
 		} catch (DataAccessException | SQLException e) {

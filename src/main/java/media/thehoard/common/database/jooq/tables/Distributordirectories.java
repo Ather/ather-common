@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Distributordirectories extends TableImpl<DistributordirectoriesRecord> {
 
-    private static final long serialVersionUID = 1475301559;
+    private static final long serialVersionUID = 689421758;
 
     /**
      * The reference instance of <code>thehoard.distributorDirectories</code>

@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Providerfilerelationships;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record3;
@@ -26,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProviderfilerelationshipsRecord extends UpdatableRecordImpl<ProviderfilerelationshipsRecord> implements Record3<Integer, String, String> {
 
-    private static final long serialVersionUID = -298074679;
+    private static final long serialVersionUID = 397548813;
 
     /**
      * Setter for <code>thehoard.ProviderFileRelationships.Id</code>.

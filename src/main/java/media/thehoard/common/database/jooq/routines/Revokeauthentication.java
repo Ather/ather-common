@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.routines;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.Thehoard;
+
 import org.jooq.Field;
 import org.jooq.Parameter;
 import org.jooq.impl.AbstractRoutine;
@@ -24,7 +26,7 @@ import org.jooq.impl.AbstractRoutine;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Revokeauthentication extends AbstractRoutine<Integer> {
 
-    private static final long serialVersionUID = -445814114;
+    private static final long serialVersionUID = -583554482;
 
     /**
      * The parameter <code>thehoard.revokeAuthentication.RETURN_VALUE</code>.

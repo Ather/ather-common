@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import media.thehoard.common.configuration.HoardConfiguration;
 import media.thehoard.common.providers.generic.Provider;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -24,7 +25,6 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import media.thehoard.common.configuration.Configuration;
 import media.thehoard.common.database.DatabaseConnector;
 import media.thehoard.common.database.jooq.tables.records.ProviderfilesRecord;
 import media.thehoard.common.providers.ProviderCache;
@@ -134,7 +134,8 @@ public abstract class ProviderFile<
 				updatePersistence(conn);
 
 			PROVIDER_FILE_LOGGER.info("Loading provider file: " + this.uuid.toString());
-			Record rs = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERFILES.fields()).from(PROVIDERFILES).where(PROVIDERFILES.UUID.eq(this.uuid.toString()))
+			Record rs = DSL.using(HoardConfiguration
+					                      .getJooqConfiguration(conn)).select(PROVIDERFILES.fields()).from(PROVIDERFILES).where(PROVIDERFILES.UUID.eq(this.uuid.toString()))
 					.fetchOne();
 
 			if (rs != null) {
@@ -169,7 +170,8 @@ public abstract class ProviderFile<
 	public boolean updatePersistence(Connection conn) {
 		try {
 			PROVIDER_FILE_LOGGER.info("Detecting similar entries for file: " + this.provider.getUuid().toString() + "->" + this.providerFileId);
-			Record result = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERFILES.ID, PROVIDERFILES.UUID).from(PROVIDERFILES)
+			Record result = DSL.using(HoardConfiguration
+					                          .getJooqConfiguration(conn)).select(PROVIDERFILES.ID, PROVIDERFILES.UUID).from(PROVIDERFILES)
 					.where(PROVIDERFILES.PROVIDERFILEID.eq(this.providerFileId).and(PROVIDERFILES.NAME.eq(this.name))).fetchOne();
 
 			if (result != null) {
@@ -198,7 +200,8 @@ public abstract class ProviderFile<
 			if (this.isPersisted) {
 				PROVIDER_FILE_LOGGER.info("Updating provider file: " + this.uuid.toString());
 				UpdateSetMoreStep<
-						ProviderfilesRecord> updateQuery = DSL.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERFILES).set(PROVIDERFILES.UUID, this.uuid.toString());
+						ProviderfilesRecord> updateQuery = DSL.using(HoardConfiguration
+								                                             .getJooqConfiguration(conn)).update(PROVIDERFILES).set(PROVIDERFILES.UUID, this.uuid.toString());
 				updateQuery.set(PROVIDERFILES.PROVIDERUUID, this.provider.getUuid().toString());
 				updateQuery.set(PROVIDERFILES.NAME, this.name);
 				updateQuery.set(PROVIDERFILES.MIMETYPE, this.mimeType);
@@ -222,7 +225,7 @@ public abstract class ProviderFile<
 				}
 			} else {
 				PROVIDER_FILE_LOGGER.info("Inserting provider file: " + this.uuid.toString());
-				DSL.using(Configuration.getJooqConfiguration(conn)).insertInto(PROVIDERFILES)
+				DSL.using(HoardConfiguration.getJooqConfiguration(conn)).insertInto(PROVIDERFILES)
 						.columns(PROVIDERFILES.UUID, PROVIDERFILES.NAME, PROVIDERFILES.DESCRIPTION, PROVIDERFILES.STATUS, PROVIDERFILES.PROVIDERFILEID, PROVIDERFILES.TYPE,
 								PROVIDERFILES.SIZE, PROVIDERFILES.HASH, PROVIDERFILES.PROVIDERUUID, PROVIDERFILES.MIMETYPE)
 						.values(this.uuid.toString(), this.name, this.description, this.status, this.providerFileId, this.getFileType().getId(), this.getSize(),
@@ -249,7 +252,8 @@ public abstract class ProviderFile<
 				return persist();
 
 			try (Connection conn = DatabaseConnector.getConnection()) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERFILES).set(field, value).where(PROVIDERFILES.ID.eq(this.databaseId))
+				DSL.using(HoardConfiguration
+						          .getJooqConfiguration(conn)).update(PROVIDERFILES).set(field, value).where(PROVIDERFILES.ID.eq(this.databaseId))
 						.execute();
 
 				// ProviderCache.providerFiles().invalidate(this.uuid);
@@ -266,7 +270,8 @@ public abstract class ProviderFile<
 	public void delete() {
 		try (Connection conn = DatabaseConnector.getConnection()) {
 			if (this.isPersisted) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).deleteFrom(PROVIDERFILES).where(PROVIDERFILES.ID.eq(this.databaseId)).execute();
+				DSL.using(HoardConfiguration
+						          .getJooqConfiguration(conn)).deleteFrom(PROVIDERFILES).where(PROVIDERFILES.ID.eq(this.databaseId)).execute();
 				ProviderCache.providerFiles().invalidate(this.uuid);
 			}
 		} catch (DataAccessException | SQLException e) {
@@ -655,8 +660,8 @@ public abstract class ProviderFile<
 
 	/*
 	 * public static UUID parseVirtualPathToUuid(String virtualPath) { if
-	 * (virtualPath.matches(VIRTUAL_PATH_REGEX)) { org.jooq.Configuration config =
-	 * Configuration.getJooqConfiguration();
+	 * (virtualPath.matches(VIRTUAL_PATH_REGEX)) { org.jooq.HoardConfiguration config =
+	 * HoardConfiguration.getJooqConfiguration();
 	 * 
 	 * String providerUuid = virtualPath.substring(0, virtualPath.indexOf(":/"));
 	 * ProviderService providerService =

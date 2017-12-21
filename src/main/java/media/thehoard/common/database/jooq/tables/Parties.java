@@ -16,7 +16,6 @@ import media.thehoard.common.database.jooq.Thehoard;
 import media.thehoard.common.database.jooq.tables.records.PartiesRecord;
 
 import org.jooq.Field;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -40,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Parties extends TableImpl<PartiesRecord> {
 
-    private static final long serialVersionUID = 1686480064;
+    private static final long serialVersionUID = 77072512;
 
     /**
      * The reference instance of <code>thehoard.Parties</code>
@@ -56,29 +55,29 @@ public class Parties extends TableImpl<PartiesRecord> {
     }
 
     /**
-     * The column <code>thehoard.Parties.id</code>.
+     * The column <code>thehoard.Parties.Id</code>.
      */
-    public final TableField<PartiesRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<PartiesRecord, Integer> ID = createField("Id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>thehoard.Parties.ownerId</code>.
+     * The column <code>thehoard.Parties.OwnerUserId</code>.
      */
-    public final TableField<PartiesRecord, Integer> OWNERID = createField("ownerId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<PartiesRecord, Integer> OWNERUSERID = createField("OwnerUserId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.Parties.name</code>.
+     * The column <code>thehoard.Parties.Name</code>.
      */
-    public final TableField<PartiesRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PartiesRecord, String> NAME = createField("Name", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>thehoard.Parties.dateCreated</code>.
+     * The column <code>thehoard.Parties.DateCreated</code>.
      */
-    public final TableField<PartiesRecord, Timestamp> DATECREATED = createField("dateCreated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<PartiesRecord, Timestamp> DATECREATED = createField("DateCreated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
-     * The column <code>thehoard.Parties.dateUpdated</code>.
+     * The column <code>thehoard.Parties.DateUpdated</code>.
      */
-    public final TableField<PartiesRecord, Timestamp> DATEUPDATED = createField("dateUpdated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<PartiesRecord, Timestamp> DATEUPDATED = createField("DateUpdated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>thehoard.Parties</code> table reference
@@ -123,14 +122,6 @@ public class Parties extends TableImpl<PartiesRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.PARTIES_ID_UNIQUE, Indexes.PARTIES_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<PartiesRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_PARTIES;
     }
 
     /**

@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Authentication extends TableImpl<AuthenticationRecord> {
 
-    private static final long serialVersionUID = 408937851;
+    private static final long serialVersionUID = 2090290744;
 
     /**
      * The reference instance of <code>thehoard.Authentication</code>
@@ -70,9 +70,9 @@ public class Authentication extends TableImpl<AuthenticationRecord> {
     public final TableField<AuthenticationRecord, Integer> DEVICEID = createField("DeviceId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.Authentication.AccountId</code>.
+     * The column <code>thehoard.Authentication.UserId</code>.
      */
-    public final TableField<AuthenticationRecord, Integer> ACCOUNTID = createField("AccountId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<AuthenticationRecord, Integer> USERID = createField("UserId", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>thehoard.Authentication.IsActive</code>.

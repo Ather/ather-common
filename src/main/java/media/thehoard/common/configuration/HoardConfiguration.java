@@ -16,14 +16,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 //TODO Create default config if it doesn't exist.
 
-public class Configuration {
+public class HoardConfiguration {
 	private static final String GROUP_NAME =
 			SystemUtils.IS_OS_WINDOWS ? "The Hoard Media" : "hoardmedia"; // Used for configuration storage purposes
 
 	/*
 	 * SLF4J LOGGER
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HoardConfiguration.class);
 
 	/*
 	 * Default configuration file name

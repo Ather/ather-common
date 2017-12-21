@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Mediachapters;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record8;
@@ -26,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MediachaptersRecord extends UpdatableRecordImpl<MediachaptersRecord> implements Record8<Integer, String, String, Long, Double, Double, Double, String> {
 
-    private static final long serialVersionUID = -108833362;
+    private static final long serialVersionUID = -309111062;
 
     /**
      * Setter for <code>thehoard.MediaChapters.Id</code>.

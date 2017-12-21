@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Virtualproviderproviders extends TableImpl<VirtualproviderprovidersRecord> {
 
-    private static final long serialVersionUID = -365568343;
+    private static final long serialVersionUID = 1139023682;
 
     /**
      * The reference instance of <code>thehoard.VirtualProviderProviders</code>

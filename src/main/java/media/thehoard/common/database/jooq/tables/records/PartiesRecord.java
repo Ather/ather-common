@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Parties;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record5;
@@ -28,73 +30,73 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements Record5<Integer, Integer, String, Timestamp, Timestamp> {
 
-    private static final long serialVersionUID = -2143540857;
+    private static final long serialVersionUID = -1079298689;
 
     /**
-     * Setter for <code>thehoard.Parties.id</code>.
+     * Setter for <code>thehoard.Parties.Id</code>.
      */
     public void setId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>thehoard.Parties.id</code>.
+     * Getter for <code>thehoard.Parties.Id</code>.
      */
     public Integer getId() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>thehoard.Parties.ownerId</code>.
+     * Setter for <code>thehoard.Parties.OwnerUserId</code>.
      */
-    public void setOwnerid(Integer value) {
+    public void setOwneruserid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>thehoard.Parties.ownerId</code>.
+     * Getter for <code>thehoard.Parties.OwnerUserId</code>.
      */
-    public Integer getOwnerid() {
+    public Integer getOwneruserid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>thehoard.Parties.name</code>.
+     * Setter for <code>thehoard.Parties.Name</code>.
      */
     public void setName(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>thehoard.Parties.name</code>.
+     * Getter for <code>thehoard.Parties.Name</code>.
      */
     public String getName() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>thehoard.Parties.dateCreated</code>.
+     * Setter for <code>thehoard.Parties.DateCreated</code>.
      */
     public void setDatecreated(Timestamp value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>thehoard.Parties.dateCreated</code>.
+     * Getter for <code>thehoard.Parties.DateCreated</code>.
      */
     public Timestamp getDatecreated() {
         return (Timestamp) get(3);
     }
 
     /**
-     * Setter for <code>thehoard.Parties.dateUpdated</code>.
+     * Setter for <code>thehoard.Parties.DateUpdated</code>.
      */
     public void setDateupdated(Timestamp value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>thehoard.Parties.dateUpdated</code>.
+     * Getter for <code>thehoard.Parties.DateUpdated</code>.
      */
     public Timestamp getDateupdated() {
         return (Timestamp) get(4);
@@ -145,7 +147,7 @@ public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements
      */
     @Override
     public Field<Integer> field2() {
-        return Parties.PARTIES.OWNERID;
+        return Parties.PARTIES.OWNERUSERID;
     }
 
     /**
@@ -185,7 +187,7 @@ public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements
      */
     @Override
     public Integer component2() {
-        return getOwnerid();
+        return getOwneruserid();
     }
 
     /**
@@ -225,7 +227,7 @@ public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements
      */
     @Override
     public Integer value2() {
-        return getOwnerid();
+        return getOwneruserid();
     }
 
     /**
@@ -266,7 +268,7 @@ public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements
      */
     @Override
     public PartiesRecord value2(Integer value) {
-        setOwnerid(value);
+        setOwneruserid(value);
         return this;
     }
 
@@ -324,11 +326,11 @@ public class PartiesRecord extends UpdatableRecordImpl<PartiesRecord> implements
     /**
      * Create a detached, initialised PartiesRecord
      */
-    public PartiesRecord(Integer id, Integer ownerid, String name, Timestamp datecreated, Timestamp dateupdated) {
+    public PartiesRecord(Integer id, Integer owneruserid, String name, Timestamp datecreated, Timestamp dateupdated) {
         super(Parties.PARTIES);
 
         set(0, id);
-        set(1, ownerid);
+        set(1, owneruserid);
         set(2, name);
         set(3, datecreated);
         set(4, dateupdated);

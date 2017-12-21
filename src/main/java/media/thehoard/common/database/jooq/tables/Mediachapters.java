@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Mediachapters extends TableImpl<MediachaptersRecord> {
 
-    private static final long serialVersionUID = -245814525;
+    private static final long serialVersionUID = -48060572;
 
     /**
      * The reference instance of <code>thehoard.MediaChapters</code>

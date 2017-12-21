@@ -3,9 +3,8 @@ package media.thehoard.common.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import media.thehoard.common.configuration.HoardConfiguration;
 import org.apache.commons.dbcp2.BasicDataSource;
-
-import media.thehoard.common.configuration.Configuration;
 
 public class DatabaseConnector {
 	private static BasicDataSource connectionPool;
@@ -17,13 +16,14 @@ public class DatabaseConnector {
 		connectionPool = new BasicDataSource();
 		// TODO Allow dynamic choices here
 		connectionPool.setDriverClassName("com.mysql.jdbc.Driver");
-		connectionPool.setUrl(String.format("jdbc:mysql://%s:%d/%s?verifyServerCertificate=false&useSSL=true", Configuration.contents().getDatabaseInfo().getDatabaseIp(), Configuration.contents().getDatabaseInfo().getDatabasePort(),
-				Configuration.contents().getDatabaseInfo().getDatabaseSchema()));
-		connectionPool.setUsername(Configuration.contents().getDatabaseInfo().getDatabaseUser());
-		connectionPool.setPassword(Configuration.contents().getDatabaseInfo().getDatabasePassword());
-		connectionPool.setInitialSize(Configuration.contents().getDatabaseInfo().getConnectionPoolInitial());
-		connectionPool.setMaxTotal(Configuration.contents().getDatabaseInfo().getConnectionPoolMax());
-		connectionPool.setMaxIdle(Configuration.contents().getDatabaseInfo().getConnectionPoolMaxIdle());
+		connectionPool.setUrl(String.format("jdbc:mysql://%s:%d/%s?verifyServerCertificate=false&useSSL=true", HoardConfiguration
+				                                    .contents().getDatabaseInfo().getDatabaseIp(), HoardConfiguration.contents().getDatabaseInfo().getDatabasePort(),
+		                                    HoardConfiguration.contents().getDatabaseInfo().getDatabaseSchema()));
+		connectionPool.setUsername(HoardConfiguration.contents().getDatabaseInfo().getDatabaseUser());
+		connectionPool.setPassword(HoardConfiguration.contents().getDatabaseInfo().getDatabasePassword());
+		connectionPool.setInitialSize(HoardConfiguration.contents().getDatabaseInfo().getConnectionPoolInitial());
+		connectionPool.setMaxTotal(HoardConfiguration.contents().getDatabaseInfo().getConnectionPoolMax());
+		connectionPool.setMaxIdle(HoardConfiguration.contents().getDatabaseInfo().getConnectionPoolMaxIdle());
 	}
 
 	/**

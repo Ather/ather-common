@@ -16,7 +16,6 @@ import media.thehoard.common.database.jooq.Thehoard;
 import media.thehoard.common.database.jooq.tables.records.HomeaccountsRecord;
 
 import org.jooq.Field;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -40,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Homeaccounts extends TableImpl<HomeaccountsRecord> {
 
-    private static final long serialVersionUID = -121276827;
+    private static final long serialVersionUID = 227104271;
 
     /**
      * The reference instance of <code>thehoard.HomeAccounts</code>
@@ -56,34 +55,34 @@ public class Homeaccounts extends TableImpl<HomeaccountsRecord> {
     }
 
     /**
-     * The column <code>thehoard.HomeAccounts.id</code>.
+     * The column <code>thehoard.HomeAccounts.Id</code>.
      */
-    public final TableField<HomeaccountsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<HomeaccountsRecord, Integer> ID = createField("Id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>thehoard.HomeAccounts.accountId</code>.
+     * The column <code>thehoard.HomeAccounts.UserId</code>.
      */
-    public final TableField<HomeaccountsRecord, Integer> ACCOUNTID = createField("accountId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<HomeaccountsRecord, Integer> USERID = createField("UserId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.HomeAccounts.homeId</code>.
+     * The column <code>thehoard.HomeAccounts.HomeId</code>.
      */
-    public final TableField<HomeaccountsRecord, Integer> HOMEID = createField("homeId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<HomeaccountsRecord, Integer> HOMEID = createField("HomeId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.HomeAccounts.pin</code>.
+     * The column <code>thehoard.HomeAccounts.Pin</code>.
      */
-    public final TableField<HomeaccountsRecord, Integer> PIN = createField("pin", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<HomeaccountsRecord, Integer> PIN = createField("Pin", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.HomeAccounts.dateJoined</code>.
+     * The column <code>thehoard.HomeAccounts.DateCreated</code>.
      */
-    public final TableField<HomeaccountsRecord, Timestamp> DATEJOINED = createField("dateJoined", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<HomeaccountsRecord, Timestamp> DATECREATED = createField("DateCreated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
-     * The column <code>thehoard.HomeAccounts.dateLeft</code>.
+     * The column <code>thehoard.HomeAccounts.DateUpdated</code>.
      */
-    public final TableField<HomeaccountsRecord, Timestamp> DATELEFT = createField("dateLeft", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<HomeaccountsRecord, Timestamp> DATEUPDATED = createField("DateUpdated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>thehoard.HomeAccounts</code> table reference
@@ -128,14 +127,6 @@ public class Homeaccounts extends TableImpl<HomeaccountsRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.HOMEACCOUNTS_ID_UNIQUE, Indexes.HOMEACCOUNTS_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<HomeaccountsRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_HOMEACCOUNTS;
     }
 
     /**

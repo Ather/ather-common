@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Homeaccounts;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record6;
@@ -28,89 +30,89 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> implements Record6<Integer, Integer, Integer, Integer, Timestamp, Timestamp> {
 
-    private static final long serialVersionUID = 270527816;
+    private static final long serialVersionUID = -881521238;
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.id</code>.
+     * Setter for <code>thehoard.HomeAccounts.Id</code>.
      */
     public void setId(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.id</code>.
+     * Getter for <code>thehoard.HomeAccounts.Id</code>.
      */
     public Integer getId() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.accountId</code>.
+     * Setter for <code>thehoard.HomeAccounts.UserId</code>.
      */
-    public void setAccountid(Integer value) {
+    public void setUserid(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.accountId</code>.
+     * Getter for <code>thehoard.HomeAccounts.UserId</code>.
      */
-    public Integer getAccountid() {
+    public Integer getUserid() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.homeId</code>.
+     * Setter for <code>thehoard.HomeAccounts.HomeId</code>.
      */
     public void setHomeid(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.homeId</code>.
+     * Getter for <code>thehoard.HomeAccounts.HomeId</code>.
      */
     public Integer getHomeid() {
         return (Integer) get(2);
     }
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.pin</code>.
+     * Setter for <code>thehoard.HomeAccounts.Pin</code>.
      */
     public void setPin(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.pin</code>.
+     * Getter for <code>thehoard.HomeAccounts.Pin</code>.
      */
     public Integer getPin() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.dateJoined</code>.
+     * Setter for <code>thehoard.HomeAccounts.DateCreated</code>.
      */
-    public void setDatejoined(Timestamp value) {
+    public void setDatecreated(Timestamp value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.dateJoined</code>.
+     * Getter for <code>thehoard.HomeAccounts.DateCreated</code>.
      */
-    public Timestamp getDatejoined() {
+    public Timestamp getDatecreated() {
         return (Timestamp) get(4);
     }
 
     /**
-     * Setter for <code>thehoard.HomeAccounts.dateLeft</code>.
+     * Setter for <code>thehoard.HomeAccounts.DateUpdated</code>.
      */
-    public void setDateleft(Timestamp value) {
+    public void setDateupdated(Timestamp value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>thehoard.HomeAccounts.dateLeft</code>.
+     * Getter for <code>thehoard.HomeAccounts.DateUpdated</code>.
      */
-    public Timestamp getDateleft() {
+    public Timestamp getDateupdated() {
         return (Timestamp) get(5);
     }
 
@@ -159,7 +161,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Field<Integer> field2() {
-        return Homeaccounts.HOMEACCOUNTS.ACCOUNTID;
+        return Homeaccounts.HOMEACCOUNTS.USERID;
     }
 
     /**
@@ -183,7 +185,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Field<Timestamp> field5() {
-        return Homeaccounts.HOMEACCOUNTS.DATEJOINED;
+        return Homeaccounts.HOMEACCOUNTS.DATECREATED;
     }
 
     /**
@@ -191,7 +193,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Field<Timestamp> field6() {
-        return Homeaccounts.HOMEACCOUNTS.DATELEFT;
+        return Homeaccounts.HOMEACCOUNTS.DATEUPDATED;
     }
 
     /**
@@ -207,7 +209,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Integer component2() {
-        return getAccountid();
+        return getUserid();
     }
 
     /**
@@ -231,7 +233,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Timestamp component5() {
-        return getDatejoined();
+        return getDatecreated();
     }
 
     /**
@@ -239,7 +241,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Timestamp component6() {
-        return getDateleft();
+        return getDateupdated();
     }
 
     /**
@@ -255,7 +257,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Integer value2() {
-        return getAccountid();
+        return getUserid();
     }
 
     /**
@@ -279,7 +281,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Timestamp value5() {
-        return getDatejoined();
+        return getDatecreated();
     }
 
     /**
@@ -287,7 +289,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public Timestamp value6() {
-        return getDateleft();
+        return getDateupdated();
     }
 
     /**
@@ -304,7 +306,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public HomeaccountsRecord value2(Integer value) {
-        setAccountid(value);
+        setUserid(value);
         return this;
     }
 
@@ -331,7 +333,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public HomeaccountsRecord value5(Timestamp value) {
-        setDatejoined(value);
+        setDatecreated(value);
         return this;
     }
 
@@ -340,7 +342,7 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
      */
     @Override
     public HomeaccountsRecord value6(Timestamp value) {
-        setDateleft(value);
+        setDateupdated(value);
         return this;
     }
 
@@ -372,14 +374,14 @@ public class HomeaccountsRecord extends UpdatableRecordImpl<HomeaccountsRecord> 
     /**
      * Create a detached, initialised HomeaccountsRecord
      */
-    public HomeaccountsRecord(Integer id, Integer accountid, Integer homeid, Integer pin, Timestamp datejoined, Timestamp dateleft) {
+    public HomeaccountsRecord(Integer id, Integer userid, Integer homeid, Integer pin, Timestamp datecreated, Timestamp dateupdated) {
         super(Homeaccounts.HOMEACCOUNTS);
 
         set(0, id);
-        set(1, accountid);
+        set(1, userid);
         set(2, homeid);
         set(3, pin);
-        set(4, datejoined);
-        set(5, dateleft);
+        set(4, datecreated);
+        set(5, dateupdated);
     }
 }

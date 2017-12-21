@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Servers;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -26,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ServersRecord extends UpdatableRecordImpl<ServersRecord> implements Record4<Integer, String, String, Integer> {
 
-    private static final long serialVersionUID = 550734404;
+    private static final long serialVersionUID = 44328064;
 
     /**
      * Setter for <code>thehoard.servers.id</code>.

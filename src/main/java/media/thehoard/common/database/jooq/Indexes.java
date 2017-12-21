@@ -6,7 +6,6 @@ package media.thehoard.common.database.jooq;
 
 import javax.annotation.Generated;
 
-import media.thehoard.common.database.jooq.tables.Accounts;
 import media.thehoard.common.database.jooq.tables.Authentication;
 import media.thehoard.common.database.jooq.tables.Devices;
 import media.thehoard.common.database.jooq.tables.Distributordestinations;
@@ -24,6 +23,7 @@ import media.thehoard.common.database.jooq.tables.Providerfiles;
 import media.thehoard.common.database.jooq.tables.Providers;
 import media.thehoard.common.database.jooq.tables.Providersold;
 import media.thehoard.common.database.jooq.tables.Servers;
+import media.thehoard.common.database.jooq.tables.Users;
 import media.thehoard.common.database.jooq.tables.Virtualproviderproviders;
 import media.thehoard.common.database.jooq.tables.Virtualproviders;
 
@@ -49,9 +49,6 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index ACCOUNTS_ID_UNIQUE = Indexes0.ACCOUNTS_ID_UNIQUE;
-    public static final Index ACCOUNTS_NAME_UNIQUE = Indexes0.ACCOUNTS_NAME_UNIQUE;
-    public static final Index ACCOUNTS_PRIMARY = Indexes0.ACCOUNTS_PRIMARY;
     public static final Index AUTHENTICATION_ID_UNIQUE = Indexes0.AUTHENTICATION_ID_UNIQUE;
     public static final Index AUTHENTICATION_PRIMARY = Indexes0.AUTHENTICATION_PRIMARY;
     public static final Index DEVICES_ID_UNIQUE = Indexes0.DEVICES_ID_UNIQUE;
@@ -92,6 +89,9 @@ public class Indexes {
     public static final Index PROVIDERSOLD_UUID_UNIQUE = Indexes0.PROVIDERSOLD_UUID_UNIQUE;
     public static final Index SERVERS_ID_UNIQUE = Indexes0.SERVERS_ID_UNIQUE;
     public static final Index SERVERS_PRIMARY = Indexes0.SERVERS_PRIMARY;
+    public static final Index USERS_ID_UNIQUE = Indexes0.USERS_ID_UNIQUE;
+    public static final Index USERS_NAME_UNIQUE = Indexes0.USERS_NAME_UNIQUE;
+    public static final Index USERS_PRIMARY = Indexes0.USERS_PRIMARY;
     public static final Index VIRTUALPROVIDERPROVIDERS_ID_UNIQUE = Indexes0.VIRTUALPROVIDERPROVIDERS_ID_UNIQUE;
     public static final Index VIRTUALPROVIDERPROVIDERS_PRIMARY = Indexes0.VIRTUALPROVIDERPROVIDERS_PRIMARY;
     public static final Index VIRTUALPROVIDERS_ID_UNIQUE = Indexes0.VIRTUALPROVIDERS_ID_UNIQUE;
@@ -104,9 +104,6 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 extends AbstractKeys {
-        public static Index ACCOUNTS_ID_UNIQUE = createIndex("id_UNIQUE", Accounts.ACCOUNTS, new OrderField[] { Accounts.ACCOUNTS.ID }, true);
-        public static Index ACCOUNTS_NAME_UNIQUE = createIndex("name_UNIQUE", Accounts.ACCOUNTS, new OrderField[] { Accounts.ACCOUNTS.NAME }, true);
-        public static Index ACCOUNTS_PRIMARY = createIndex("PRIMARY", Accounts.ACCOUNTS, new OrderField[] { Accounts.ACCOUNTS.ID }, true);
         public static Index AUTHENTICATION_ID_UNIQUE = createIndex("id_UNIQUE", Authentication.AUTHENTICATION, new OrderField[] { Authentication.AUTHENTICATION.ID }, true);
         public static Index AUTHENTICATION_PRIMARY = createIndex("PRIMARY", Authentication.AUTHENTICATION, new OrderField[] { Authentication.AUTHENTICATION.ID }, true);
         public static Index DEVICES_ID_UNIQUE = createIndex("id_UNIQUE", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
@@ -147,6 +144,9 @@ public class Indexes {
         public static Index PROVIDERSOLD_UUID_UNIQUE = createIndex("uuid_UNIQUE", Providersold.PROVIDERSOLD, new OrderField[] { Providersold.PROVIDERSOLD.UUID }, true);
         public static Index SERVERS_ID_UNIQUE = createIndex("id_UNIQUE", Servers.SERVERS, new OrderField[] { Servers.SERVERS.ID }, true);
         public static Index SERVERS_PRIMARY = createIndex("PRIMARY", Servers.SERVERS, new OrderField[] { Servers.SERVERS.ID }, true);
+        public static Index USERS_ID_UNIQUE = createIndex("id_UNIQUE", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
+        public static Index USERS_NAME_UNIQUE = createIndex("name_UNIQUE", Users.USERS, new OrderField[] { Users.USERS.NAME }, true);
+        public static Index USERS_PRIMARY = createIndex("PRIMARY", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
         public static Index VIRTUALPROVIDERPROVIDERS_ID_UNIQUE = createIndex("id_UNIQUE", Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS, new OrderField[] { Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS.ID }, true);
         public static Index VIRTUALPROVIDERPROVIDERS_PRIMARY = createIndex("PRIMARY", Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS, new OrderField[] { Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS.ID }, true);
         public static Index VIRTUALPROVIDERS_ID_UNIQUE = createIndex("id_UNIQUE", Virtualproviders.VIRTUALPROVIDERS, new OrderField[] { Virtualproviders.VIRTUALPROVIDERS.ID }, true);

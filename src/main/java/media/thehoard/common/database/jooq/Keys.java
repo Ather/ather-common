@@ -6,7 +6,6 @@ package media.thehoard.common.database.jooq;
 
 import javax.annotation.Generated;
 
-import media.thehoard.common.database.jooq.tables.Accounts;
 import media.thehoard.common.database.jooq.tables.Authentication;
 import media.thehoard.common.database.jooq.tables.Devices;
 import media.thehoard.common.database.jooq.tables.Distributordestinations;
@@ -24,9 +23,9 @@ import media.thehoard.common.database.jooq.tables.Providerfiles;
 import media.thehoard.common.database.jooq.tables.Providers;
 import media.thehoard.common.database.jooq.tables.Providersold;
 import media.thehoard.common.database.jooq.tables.Servers;
+import media.thehoard.common.database.jooq.tables.Users;
 import media.thehoard.common.database.jooq.tables.Virtualproviderproviders;
 import media.thehoard.common.database.jooq.tables.Virtualproviders;
-import media.thehoard.common.database.jooq.tables.records.AccountsRecord;
 import media.thehoard.common.database.jooq.tables.records.AuthenticationRecord;
 import media.thehoard.common.database.jooq.tables.records.DevicesRecord;
 import media.thehoard.common.database.jooq.tables.records.DistributordestinationsRecord;
@@ -44,6 +43,7 @@ import media.thehoard.common.database.jooq.tables.records.ProviderfilesRecord;
 import media.thehoard.common.database.jooq.tables.records.ProvidersRecord;
 import media.thehoard.common.database.jooq.tables.records.ProvidersoldRecord;
 import media.thehoard.common.database.jooq.tables.records.ServersRecord;
+import media.thehoard.common.database.jooq.tables.records.UsersRecord;
 import media.thehoard.common.database.jooq.tables.records.VirtualproviderprovidersRecord;
 import media.thehoard.common.database.jooq.tables.records.VirtualprovidersRecord;
 
@@ -74,13 +74,10 @@ public class Keys {
     public static final Identity<DistributordestinationsRecord, Integer> IDENTITY_DISTRIBUTORDESTINATIONS = Identities0.IDENTITY_DISTRIBUTORDESTINATIONS;
     public static final Identity<DistributordirectoriesRecord, Integer> IDENTITY_DISTRIBUTORDIRECTORIES = Identities0.IDENTITY_DISTRIBUTORDIRECTORIES;
     public static final Identity<DistributorqueueRecord, Integer> IDENTITY_DISTRIBUTORQUEUE = Identities0.IDENTITY_DISTRIBUTORQUEUE;
-    public static final Identity<HomeaccountsRecord, Integer> IDENTITY_HOMEACCOUNTS = Identities0.IDENTITY_HOMEACCOUNTS;
     public static final Identity<HomesRecord, Integer> IDENTITY_HOMES = Identities0.IDENTITY_HOMES;
     public static final Identity<MediachaptersRecord, Integer> IDENTITY_MEDIACHAPTERS = Identities0.IDENTITY_MEDIACHAPTERS;
     public static final Identity<MediafilesRecord, Integer> IDENTITY_MEDIAFILES = Identities0.IDENTITY_MEDIAFILES;
     public static final Identity<MediastreamsRecord, Integer> IDENTITY_MEDIASTREAMS = Identities0.IDENTITY_MEDIASTREAMS;
-    public static final Identity<PartiesRecord, Integer> IDENTITY_PARTIES = Identities0.IDENTITY_PARTIES;
-    public static final Identity<PartyaccountsRecord, Integer> IDENTITY_PARTYACCOUNTS = Identities0.IDENTITY_PARTYACCOUNTS;
     public static final Identity<ProviderfilerelationshipsRecord, Integer> IDENTITY_PROVIDERFILERELATIONSHIPS = Identities0.IDENTITY_PROVIDERFILERELATIONSHIPS;
     public static final Identity<ProviderfilesRecord, Integer> IDENTITY_PROVIDERFILES = Identities0.IDENTITY_PROVIDERFILES;
     public static final Identity<ProvidersRecord, Integer> IDENTITY_PROVIDERS = Identities0.IDENTITY_PROVIDERS;
@@ -93,9 +90,6 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_PRIMARY = UniqueKeys0.KEY_ACCOUNTS_PRIMARY;
-    public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_ID_UNIQUE = UniqueKeys0.KEY_ACCOUNTS_ID_UNIQUE;
-    public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_NAME_UNIQUE = UniqueKeys0.KEY_ACCOUNTS_NAME_UNIQUE;
     public static final UniqueKey<AuthenticationRecord> KEY_AUTHENTICATION_PRIMARY = UniqueKeys0.KEY_AUTHENTICATION_PRIMARY;
     public static final UniqueKey<AuthenticationRecord> KEY_AUTHENTICATION_ID_UNIQUE = UniqueKeys0.KEY_AUTHENTICATION_ID_UNIQUE;
     public static final UniqueKey<DevicesRecord> KEY_DEVICES_PRIMARY = UniqueKeys0.KEY_DEVICES_PRIMARY;
@@ -136,6 +130,9 @@ public class Keys {
     public static final UniqueKey<ProvidersoldRecord> KEY_PROVIDERSOLD_UUID_UNIQUE = UniqueKeys0.KEY_PROVIDERSOLD_UUID_UNIQUE;
     public static final UniqueKey<ServersRecord> KEY_SERVERS_PRIMARY = UniqueKeys0.KEY_SERVERS_PRIMARY;
     public static final UniqueKey<ServersRecord> KEY_SERVERS_ID_UNIQUE = UniqueKeys0.KEY_SERVERS_ID_UNIQUE;
+    public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = UniqueKeys0.KEY_USERS_PRIMARY;
+    public static final UniqueKey<UsersRecord> KEY_USERS_ID_UNIQUE = UniqueKeys0.KEY_USERS_ID_UNIQUE;
+    public static final UniqueKey<UsersRecord> KEY_USERS_NAME_UNIQUE = UniqueKeys0.KEY_USERS_NAME_UNIQUE;
     public static final UniqueKey<VirtualproviderprovidersRecord> KEY_VIRTUALPROVIDERPROVIDERS_PRIMARY = UniqueKeys0.KEY_VIRTUALPROVIDERPROVIDERS_PRIMARY;
     public static final UniqueKey<VirtualproviderprovidersRecord> KEY_VIRTUALPROVIDERPROVIDERS_ID_UNIQUE = UniqueKeys0.KEY_VIRTUALPROVIDERPROVIDERS_ID_UNIQUE;
     public static final UniqueKey<VirtualprovidersRecord> KEY_VIRTUALPROVIDERS_PRIMARY = UniqueKeys0.KEY_VIRTUALPROVIDERS_PRIMARY;
@@ -157,13 +154,10 @@ public class Keys {
         public static Identity<DistributordestinationsRecord, Integer> IDENTITY_DISTRIBUTORDESTINATIONS = createIdentity(Distributordestinations.DISTRIBUTORDESTINATIONS, Distributordestinations.DISTRIBUTORDESTINATIONS.ID);
         public static Identity<DistributordirectoriesRecord, Integer> IDENTITY_DISTRIBUTORDIRECTORIES = createIdentity(Distributordirectories.DISTRIBUTORDIRECTORIES, Distributordirectories.DISTRIBUTORDIRECTORIES.ID);
         public static Identity<DistributorqueueRecord, Integer> IDENTITY_DISTRIBUTORQUEUE = createIdentity(Distributorqueue.DISTRIBUTORQUEUE, Distributorqueue.DISTRIBUTORQUEUE.ID);
-        public static Identity<HomeaccountsRecord, Integer> IDENTITY_HOMEACCOUNTS = createIdentity(Homeaccounts.HOMEACCOUNTS, Homeaccounts.HOMEACCOUNTS.ID);
         public static Identity<HomesRecord, Integer> IDENTITY_HOMES = createIdentity(Homes.HOMES, Homes.HOMES.ID);
         public static Identity<MediachaptersRecord, Integer> IDENTITY_MEDIACHAPTERS = createIdentity(Mediachapters.MEDIACHAPTERS, Mediachapters.MEDIACHAPTERS.ID);
         public static Identity<MediafilesRecord, Integer> IDENTITY_MEDIAFILES = createIdentity(Mediafiles.MEDIAFILES, Mediafiles.MEDIAFILES.ID);
         public static Identity<MediastreamsRecord, Integer> IDENTITY_MEDIASTREAMS = createIdentity(Mediastreams.MEDIASTREAMS, Mediastreams.MEDIASTREAMS.ID);
-        public static Identity<PartiesRecord, Integer> IDENTITY_PARTIES = createIdentity(Parties.PARTIES, Parties.PARTIES.ID);
-        public static Identity<PartyaccountsRecord, Integer> IDENTITY_PARTYACCOUNTS = createIdentity(Partyaccounts.PARTYACCOUNTS, Partyaccounts.PARTYACCOUNTS.ID);
         public static Identity<ProviderfilerelationshipsRecord, Integer> IDENTITY_PROVIDERFILERELATIONSHIPS = createIdentity(Providerfilerelationships.PROVIDERFILERELATIONSHIPS, Providerfilerelationships.PROVIDERFILERELATIONSHIPS.ID);
         public static Identity<ProviderfilesRecord, Integer> IDENTITY_PROVIDERFILES = createIdentity(Providerfiles.PROVIDERFILES, Providerfiles.PROVIDERFILES.ID);
         public static Identity<ProvidersRecord, Integer> IDENTITY_PROVIDERS = createIdentity(Providers.PROVIDERS, Providers.PROVIDERS.ID);
@@ -174,9 +168,6 @@ public class Keys {
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
-        public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_PRIMARY = createUniqueKey(Accounts.ACCOUNTS, "KEY_Accounts_PRIMARY", Accounts.ACCOUNTS.ID);
-        public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_ID_UNIQUE = createUniqueKey(Accounts.ACCOUNTS, "KEY_Accounts_id_UNIQUE", Accounts.ACCOUNTS.ID);
-        public static final UniqueKey<AccountsRecord> KEY_ACCOUNTS_NAME_UNIQUE = createUniqueKey(Accounts.ACCOUNTS, "KEY_Accounts_name_UNIQUE", Accounts.ACCOUNTS.NAME);
         public static final UniqueKey<AuthenticationRecord> KEY_AUTHENTICATION_PRIMARY = createUniqueKey(Authentication.AUTHENTICATION, "KEY_Authentication_PRIMARY", Authentication.AUTHENTICATION.ID);
         public static final UniqueKey<AuthenticationRecord> KEY_AUTHENTICATION_ID_UNIQUE = createUniqueKey(Authentication.AUTHENTICATION, "KEY_Authentication_id_UNIQUE", Authentication.AUTHENTICATION.ID);
         public static final UniqueKey<DevicesRecord> KEY_DEVICES_PRIMARY = createUniqueKey(Devices.DEVICES, "KEY_devices_PRIMARY", Devices.DEVICES.ID);
@@ -217,6 +208,9 @@ public class Keys {
         public static final UniqueKey<ProvidersoldRecord> KEY_PROVIDERSOLD_UUID_UNIQUE = createUniqueKey(Providersold.PROVIDERSOLD, "KEY_providersold_uuid_UNIQUE", Providersold.PROVIDERSOLD.UUID);
         public static final UniqueKey<ServersRecord> KEY_SERVERS_PRIMARY = createUniqueKey(Servers.SERVERS, "KEY_servers_PRIMARY", Servers.SERVERS.ID);
         public static final UniqueKey<ServersRecord> KEY_SERVERS_ID_UNIQUE = createUniqueKey(Servers.SERVERS, "KEY_servers_id_UNIQUE", Servers.SERVERS.ID);
+        public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = createUniqueKey(Users.USERS, "KEY_Users_PRIMARY", Users.USERS.ID);
+        public static final UniqueKey<UsersRecord> KEY_USERS_ID_UNIQUE = createUniqueKey(Users.USERS, "KEY_Users_id_UNIQUE", Users.USERS.ID);
+        public static final UniqueKey<UsersRecord> KEY_USERS_NAME_UNIQUE = createUniqueKey(Users.USERS, "KEY_Users_name_UNIQUE", Users.USERS.NAME);
         public static final UniqueKey<VirtualproviderprovidersRecord> KEY_VIRTUALPROVIDERPROVIDERS_PRIMARY = createUniqueKey(Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS, "KEY_VirtualProviderProviders_PRIMARY", Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS.ID);
         public static final UniqueKey<VirtualproviderprovidersRecord> KEY_VIRTUALPROVIDERPROVIDERS_ID_UNIQUE = createUniqueKey(Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS, "KEY_VirtualProviderProviders_id_UNIQUE", Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS.ID);
         public static final UniqueKey<VirtualprovidersRecord> KEY_VIRTUALPROVIDERS_PRIMARY = createUniqueKey(Virtualproviders.VIRTUALPROVIDERS, "KEY_VirtualProviders_PRIMARY", Virtualproviders.VIRTUALPROVIDERS.ID);

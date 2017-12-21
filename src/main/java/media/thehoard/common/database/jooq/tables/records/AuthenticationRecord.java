@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Authentication;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record7;
@@ -28,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationRecord> implements Record7<Integer, String, Integer, Integer, Byte, Timestamp, Timestamp> {
 
-    private static final long serialVersionUID = 682119189;
+    private static final long serialVersionUID = 172451959;
 
     /**
      * Setter for <code>thehoard.Authentication.Id</code>.
@@ -73,16 +75,16 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
     }
 
     /**
-     * Setter for <code>thehoard.Authentication.AccountId</code>.
+     * Setter for <code>thehoard.Authentication.UserId</code>.
      */
-    public void setAccountid(Integer value) {
+    public void setUserid(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>thehoard.Authentication.AccountId</code>.
+     * Getter for <code>thehoard.Authentication.UserId</code>.
      */
-    public Integer getAccountid() {
+    public Integer getUserid() {
         return (Integer) get(3);
     }
 
@@ -189,7 +191,7 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
      */
     @Override
     public Field<Integer> field4() {
-        return Authentication.AUTHENTICATION.ACCOUNTID;
+        return Authentication.AUTHENTICATION.USERID;
     }
 
     /**
@@ -245,7 +247,7 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
      */
     @Override
     public Integer component4() {
-        return getAccountid();
+        return getUserid();
     }
 
     /**
@@ -301,7 +303,7 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
      */
     @Override
     public Integer value4() {
-        return getAccountid();
+        return getUserid();
     }
 
     /**
@@ -360,7 +362,7 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
      */
     @Override
     public AuthenticationRecord value4(Integer value) {
-        setAccountid(value);
+        setUserid(value);
         return this;
     }
 
@@ -420,13 +422,13 @@ public class AuthenticationRecord extends UpdatableRecordImpl<AuthenticationReco
     /**
      * Create a detached, initialised AuthenticationRecord
      */
-    public AuthenticationRecord(Integer id, String accesstoken, Integer deviceid, Integer accountid, Byte isactive, Timestamp datecreated, Timestamp daterevoked) {
+    public AuthenticationRecord(Integer id, String accesstoken, Integer deviceid, Integer userid, Byte isactive, Timestamp datecreated, Timestamp daterevoked) {
         super(Authentication.AUTHENTICATION);
 
         set(0, id);
         set(1, accesstoken);
         set(2, deviceid);
-        set(3, accountid);
+        set(3, userid);
         set(4, isactive);
         set(5, datecreated);
         set(6, daterevoked);

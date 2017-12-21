@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import media.thehoard.common.configuration.HoardConfiguration;
 import media.thehoard.common.providers.generic.Provider;
 import org.jooq.Record;
 import org.jooq.Record2;
@@ -22,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
-import media.thehoard.common.configuration.Configuration;
 import media.thehoard.common.database.DatabaseConnector;
 import media.thehoard.common.providers.drive.Drive;
 import media.thehoard.common.providers.drive.models.DriveFile;
@@ -50,7 +50,7 @@ public class ProviderCache {
 
 	private static Provider<?, ?, ?, ?, ?, ?> loadProvider(UUID key) {
 		try (Connection conn = DatabaseConnector.getConnection()) {
-			Record rs = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERS.TYPEID)
+			Record rs = DSL.using(HoardConfiguration.getJooqConfiguration(conn)).select(PROVIDERS.TYPEID)
 					.from(PROVIDERS).where(PROVIDERS.UUID.eq(key.toString()))
 					.fetchOne();
 
@@ -72,7 +72,7 @@ public class ProviderCache {
 		List<ProviderFileRelationship> relationships = new ArrayList<>(1);
 		try (Connection conn = DatabaseConnector.getConnection()) {
 			PROVIDER_CACHE_LOGGER.info("Loading file relationships for file: " + key.toString());
-			List<Record2<Integer, String>> records = DSL.using(Configuration.getJooqConfiguration(conn))
+			List<Record2<Integer, String>> records = DSL.using(HoardConfiguration.getJooqConfiguration(conn))
 					.select(PROVIDERFILERELATIONSHIPS.ID, PROVIDERFILERELATIONSHIPS.PARENTUUID)
 					.from(PROVIDERFILERELATIONSHIPS).where(PROVIDERFILERELATIONSHIPS.FILEUUID.eq(key.toString()))
 					.fetch();
@@ -93,7 +93,7 @@ public class ProviderCache {
 
 	private static ProviderFile<?, ?, ?, ?, ?, ?> loadFile(UUID key) {
 		try (Connection conn = DatabaseConnector.getConnection()) {
-			Record rs = DSL.using(DatabaseConnector.getConnection(), Configuration.contents().getDatabaseInfo().getSqlDialect())
+			Record rs = DSL.using(DatabaseConnector.getConnection(), HoardConfiguration.contents().getDatabaseInfo().getSqlDialect())
 					.select(PROVIDERFILES.PROVIDERUUID).from(PROVIDERFILES)
 					.where(PROVIDERFILES.UUID.eq(key.toString())).fetchOne();
 

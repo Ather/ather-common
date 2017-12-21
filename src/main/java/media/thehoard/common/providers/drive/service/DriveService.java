@@ -40,7 +40,7 @@ public class DriveService extends
 		ProviderService<DriveAuthorization, DriveConfiguration, DriveCredential, DriveFile, Drive, DriveService> {
 	public static Logger DRIVE_SERVICE_LOGGER = LoggerFactory.getLogger(DriveService.class);
 
-	public static final String APPLICATION_NAME = "The Hoard Media Server Google Drive Plugin";
+	public static final String APPLICATION_NAME = "The Hoard Media Server Google Drive HoardPlugin";
 
 	private static final String PARTIAL_FIELDS = "id, name, mimeType, description, trashed, parents, createdTime, modifiedTime, teamDriveId, md5Checksum, size, teamDriveId, capabilities(canDownload)";
 	private static final String LIST_PARTIAL_FIELDS = String.format("nextPageToken, files(%s)", PARTIAL_FIELDS);

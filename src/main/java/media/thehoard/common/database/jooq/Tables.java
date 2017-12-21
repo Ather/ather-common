@@ -6,7 +6,6 @@ package media.thehoard.common.database.jooq;
 
 import javax.annotation.Generated;
 
-import media.thehoard.common.database.jooq.tables.Accounts;
 import media.thehoard.common.database.jooq.tables.Authentication;
 import media.thehoard.common.database.jooq.tables.Devices;
 import media.thehoard.common.database.jooq.tables.Distributordestinations;
@@ -24,6 +23,7 @@ import media.thehoard.common.database.jooq.tables.Providerfiles;
 import media.thehoard.common.database.jooq.tables.Providers;
 import media.thehoard.common.database.jooq.tables.Providersold;
 import media.thehoard.common.database.jooq.tables.Servers;
+import media.thehoard.common.database.jooq.tables.Users;
 import media.thehoard.common.database.jooq.tables.Virtualproviderproviders;
 import media.thehoard.common.database.jooq.tables.Virtualproviders;
 
@@ -40,11 +40,6 @@ import media.thehoard.common.database.jooq.tables.Virtualproviders;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
-
-    /**
-     * The table <code>thehoard.Accounts</code>.
-     */
-    public static final Accounts ACCOUNTS = media.thehoard.common.database.jooq.tables.Accounts.ACCOUNTS;
 
     /**
      * The table <code>thehoard.Authentication</code>.
@@ -131,6 +126,11 @@ This is structured differently than the regular files/directories tables because
      * The table <code>thehoard.servers</code>.
      */
     public static final Servers SERVERS = media.thehoard.common.database.jooq.tables.Servers.SERVERS;
+
+    /**
+     * The table <code>thehoard.Users</code>.
+     */
+    public static final Users USERS = media.thehoard.common.database.jooq.tables.Users.USERS;
 
     /**
      * Provider references for virtual providers

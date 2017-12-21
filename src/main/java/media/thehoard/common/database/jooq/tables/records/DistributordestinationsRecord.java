@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Distributordestinations;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -26,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DistributordestinationsRecord extends UpdatableRecordImpl<DistributordestinationsRecord> implements Record4<Integer, Integer, Byte, String> {
 
-    private static final long serialVersionUID = -1111309142;
+    private static final long serialVersionUID = 1560621286;
 
     /**
      * Setter for <code>thehoard.distributorDestinations.id</code>.

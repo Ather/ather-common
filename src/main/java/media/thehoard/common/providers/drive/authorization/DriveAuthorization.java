@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 
+import media.thehoard.common.configuration.HoardConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.About;
 
-import media.thehoard.common.configuration.Configuration;
 import media.thehoard.common.providers.drive.DriveConfiguration;
 import media.thehoard.common.providers.drive.Drive;
 import media.thehoard.common.providers.drive.models.DriveFile;
@@ -66,7 +66,7 @@ public class DriveAuthorization extends ProviderAuthorization<DriveAuthorization
 		try {
 			//TODO Make this more customizable
 			clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-					new InputStreamReader(new FileInputStream(new File(Configuration.CONFIGURATION_LOCATION + "providers/drive/client_secret.json"))));
+					new InputStreamReader(new FileInputStream(new File(HoardConfiguration.CONFIGURATION_LOCATION + "providers/drive/client_secret.json"))));
 		} catch (IOException e) {
 			DRIVE_AUTHORIZATION_LOGGER.error("Failed to initialize google client secrets for Google Drive authorization", e);
 		}

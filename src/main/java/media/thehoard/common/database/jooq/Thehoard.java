@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
-import media.thehoard.common.database.jooq.tables.Accounts;
 import media.thehoard.common.database.jooq.tables.Authentication;
 import media.thehoard.common.database.jooq.tables.Devices;
 import media.thehoard.common.database.jooq.tables.Distributordestinations;
@@ -28,6 +27,7 @@ import media.thehoard.common.database.jooq.tables.Providerfiles;
 import media.thehoard.common.database.jooq.tables.Providers;
 import media.thehoard.common.database.jooq.tables.Providersold;
 import media.thehoard.common.database.jooq.tables.Servers;
+import media.thehoard.common.database.jooq.tables.Users;
 import media.thehoard.common.database.jooq.tables.Virtualproviderproviders;
 import media.thehoard.common.database.jooq.tables.Virtualproviders;
 
@@ -49,17 +49,12 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thehoard extends SchemaImpl {
 
-    private static final long serialVersionUID = -955774972;
+    private static final long serialVersionUID = -1648835039;
 
     /**
      * The reference instance of <code>thehoard</code>
      */
     public static final Thehoard THEHOARD = new Thehoard();
-
-    /**
-     * The table <code>thehoard.Accounts</code>.
-     */
-    public final Accounts ACCOUNTS = media.thehoard.common.database.jooq.tables.Accounts.ACCOUNTS;
 
     /**
      * The table <code>thehoard.Authentication</code>.
@@ -148,6 +143,11 @@ This is structured differently than the regular files/directories tables because
     public final Servers SERVERS = media.thehoard.common.database.jooq.tables.Servers.SERVERS;
 
     /**
+     * The table <code>thehoard.Users</code>.
+     */
+    public final Users USERS = media.thehoard.common.database.jooq.tables.Users.USERS;
+
+    /**
      * Provider references for virtual providers
      */
     public final Virtualproviderproviders VIRTUALPROVIDERPROVIDERS = media.thehoard.common.database.jooq.tables.Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS;
@@ -182,7 +182,6 @@ This is structured differently than the regular files/directories tables because
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            Accounts.ACCOUNTS,
             Authentication.AUTHENTICATION,
             Devices.DEVICES,
             Distributordestinations.DISTRIBUTORDESTINATIONS,
@@ -200,6 +199,7 @@ This is structured differently than the regular files/directories tables because
             Providers.PROVIDERS,
             Providersold.PROVIDERSOLD,
             Servers.SERVERS,
+            Users.USERS,
             Virtualproviderproviders.VIRTUALPROVIDERPROVIDERS,
             Virtualproviders.VIRTUALPROVIDERS);
     }

@@ -3,7 +3,7 @@
  */
 package media.thehoard.common.providers.generic;
 
-import media.thehoard.common.configuration.Configuration;
+import media.thehoard.common.configuration.HoardConfiguration;
 import media.thehoard.common.database.DatabaseConnector;
 import media.thehoard.common.database.jooq.tables.records.ProvidersRecord;
 import media.thehoard.common.providers.ProviderCache;
@@ -142,7 +142,8 @@ public abstract class Provider<
 	@Override
 	public synchronized void load() {
 		try (Connection conn = DatabaseConnector.getConnection()) {
-			Record rs = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERS.fields()).from(PROVIDERS)
+			Record rs = DSL.using(HoardConfiguration
+					                      .getJooqConfiguration(conn)).select(PROVIDERS.fields()).from(PROVIDERS)
 					.where(PROVIDERS.UUID.eq(this.uuid.toString())).fetchOne();
 
 			if (rs != null) {
@@ -177,7 +178,7 @@ public abstract class Provider<
 				return persist();
 
 			try (Connection conn = DatabaseConnector.getConnection()) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERS).set(field, value)
+				DSL.using(HoardConfiguration.getJooqConfiguration(conn)).update(PROVIDERS).set(field, value)
 						.where(PROVIDERS.ID.eq(this.databaseId)).execute();
 
 				// ProviderCache.providers().invalidate(this.uuid);
@@ -198,7 +199,7 @@ public abstract class Provider<
 			if (this.isPersisted) {
 				PROVIDER_LOGGER.info("Updating provider: " + this.uuid.toString());
 				UpdateSetMoreStep<ProvidersRecord> updateQuery = DSL
-						.using(Configuration.getJooqConfiguration(conn)).update(PROVIDERS)
+						.using(HoardConfiguration.getJooqConfiguration(conn)).update(PROVIDERS)
 						.set(PROVIDERS.UUID, this.uuid.toString());
 				updateQuery.set(PROVIDERS.TYPEID, this.typeId);
 				updateQuery.set(PROVIDERS.USAGEID, this.usageId);
@@ -215,7 +216,7 @@ public abstract class Provider<
 				if (conn != null) conn.close();
 			} else {
 				PROVIDER_LOGGER.info("Inserting provider: " + this.uuid.toString());
-				DSL.using(Configuration.getJooqConfiguration(conn)).insertInto(PROVIDERS)
+				DSL.using(HoardConfiguration.getJooqConfiguration(conn)).insertInto(PROVIDERS)
 						.columns(PROVIDERS.ALIAS, PROVIDERS.CONFIGURATION, PROVIDERS.CREDENTIAL, PROVIDERS.PROVIDERALIAS, PROVIDERS.STATUS,
 						         PROVIDERS.TYPEID, PROVIDERS.USAGEID, PROVIDERS.UUID)
 						.values(this.alias, GsonUtil.getPrettyGson().toJson(this.configuration), GsonUtil
@@ -238,7 +239,7 @@ public abstract class Provider<
 	private synchronized boolean updatePersistence(Connection conn) {
 		try {
 			PROVIDER_LOGGER.info("Detecting similar entries for provider: " + this.uuid.toString());
-			Record result = DSL.using(Configuration.getJooqConfiguration(conn)).select(PROVIDERS.ID, PROVIDERS.UUID)
+			Record result = DSL.using(HoardConfiguration.getJooqConfiguration(conn)).select(PROVIDERS.ID, PROVIDERS.UUID)
 					.from(PROVIDERS)
 					.where(PROVIDERS.TYPEID.eq(this.typeId).and(PROVIDERS.USAGEID.eq(this.usageId)
 							                                            .and(PROVIDERS.PROVIDERALIAS
@@ -261,7 +262,7 @@ public abstract class Provider<
 		try (Connection conn = DatabaseConnector.getConnection()) {
 			PROVIDER_LOGGER.warn("Deleting provider: " + this.uuid.toString());
 			if (this.isPersisted) {
-				DSL.using(Configuration.getJooqConfiguration(conn)).deleteFrom(PROVIDERS)
+				DSL.using(HoardConfiguration.getJooqConfiguration(conn)).deleteFrom(PROVIDERS)
 						.where(PROVIDERS.ID.eq(this.databaseId)).execute();
 				ProviderCache.providers().invalidate(this.uuid);
 			}

@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Providers;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record13;
@@ -28,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProvidersRecord extends UpdatableRecordImpl<ProvidersRecord> implements Record13<Integer, String, String, String, Byte, Byte, Byte, Timestamp, Timestamp, String, String, String, byte[]> {
 
-    private static final long serialVersionUID = 261743286;
+    private static final long serialVersionUID = 867744326;
 
     /**
      * Setter for <code>thehoard.Providers.Id</code>.

@@ -16,7 +16,6 @@ import media.thehoard.common.database.jooq.Thehoard;
 import media.thehoard.common.database.jooq.tables.records.PartyaccountsRecord;
 
 import org.jooq.Field;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
@@ -40,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Partyaccounts extends TableImpl<PartyaccountsRecord> {
 
-    private static final long serialVersionUID = -1779199374;
+    private static final long serialVersionUID = 110233147;
 
     /**
      * The reference instance of <code>thehoard.PartyAccounts</code>
@@ -56,39 +55,34 @@ public class Partyaccounts extends TableImpl<PartyaccountsRecord> {
     }
 
     /**
-     * The column <code>thehoard.PartyAccounts.id</code>.
+     * The column <code>thehoard.PartyAccounts.Id</code>.
      */
-    public final TableField<PartyaccountsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<PartyaccountsRecord, Integer> ID = createField("Id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>thehoard.PartyAccounts.accountId</code>.
+     * The column <code>thehoard.PartyAccounts.UserId</code>.
      */
-    public final TableField<PartyaccountsRecord, Integer> ACCOUNTID = createField("accountId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<PartyaccountsRecord, Integer> USERID = createField("UserId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.PartyAccounts.partyId</code>.
+     * The column <code>thehoard.PartyAccounts.PartyId</code>.
      */
-    public final TableField<PartyaccountsRecord, Integer> PARTYID = createField("partyId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<PartyaccountsRecord, Integer> PARTYID = createField("PartyId", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>thehoard.PartyAccounts.isActive</code>.
+     * The column <code>thehoard.PartyAccounts.IsActive</code>.
      */
-    public final TableField<PartyaccountsRecord, Byte> ISACTIVE = createField("isActive", org.jooq.impl.SQLDataType.TINYINT, this, "");
+    public final TableField<PartyaccountsRecord, Byte> ISACTIVE = createField("IsActive", org.jooq.impl.SQLDataType.TINYINT, this, "");
 
     /**
-     * The column <code>thehoard.PartyAccounts.dateJoined</code>.
+     * The column <code>thehoard.PartyAccounts.DateJoined</code>.
      */
-    public final TableField<PartyaccountsRecord, Timestamp> DATEJOINED = createField("dateJoined", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<PartyaccountsRecord, Timestamp> DATEJOINED = createField("DateJoined", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
-     * The column <code>thehoard.PartyAccounts.dateUpdated</code>.
+     * The column <code>thehoard.PartyAccounts.DateUpdated</code>.
      */
-    public final TableField<PartyaccountsRecord, Timestamp> DATEUPDATED = createField("dateUpdated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-    /**
-     * The column <code>thehoard.PartyAccounts.dateLeft</code>.
-     */
-    public final TableField<PartyaccountsRecord, Timestamp> DATELEFT = createField("dateLeft", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<PartyaccountsRecord, Timestamp> DATEUPDATED = createField("DateUpdated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>thehoard.PartyAccounts</code> table reference
@@ -133,14 +127,6 @@ public class Partyaccounts extends TableImpl<PartyaccountsRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.PARTYACCOUNTS_ID_UNIQUE, Indexes.PARTYACCOUNTS_PRIMARY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<PartyaccountsRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_PARTYACCOUNTS;
     }
 
     /**

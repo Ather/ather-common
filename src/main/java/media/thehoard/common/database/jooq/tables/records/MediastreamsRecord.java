@@ -6,6 +6,8 @@ package media.thehoard.common.database.jooq.tables.records;
 
 import javax.annotation.Generated;
 
+import media.thehoard.common.database.jooq.tables.Mediastreams;
+
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -23,7 +25,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MediastreamsRecord extends UpdatableRecordImpl<MediastreamsRecord> {
 
-    private static final long serialVersionUID = -1181525182;
+    private static final long serialVersionUID = -1386210690;
 
     /**
      * Setter for <code>thehoard.MediaStreams.Id</code>.

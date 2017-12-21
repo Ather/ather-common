@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Mediastreams extends TableImpl<MediastreamsRecord> {
 
-    private static final long serialVersionUID = 1098118329;
+    private static final long serialVersionUID = 930039642;
 
     /**
      * The reference instance of <code>thehoard.MediaStreams</code>

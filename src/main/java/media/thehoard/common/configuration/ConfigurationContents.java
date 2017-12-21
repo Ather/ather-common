@@ -117,9 +117,24 @@ public class ConfigurationContents {
 
 	private Boolean analyzeOnScan = true;
 
-	private String ffmpegLocation = Configuration.CONFIGURATION_LOCATION + "ffmpeg" + File.separator + "ffmpeg";
-	private String ffprobeLocation = Configuration.CONFIGURATION_LOCATION + "ffmpeg" + File.separator + "ffprobe";
-	private String rcloneLocation = Configuration.CONFIGURATION_LOCATION + "rclone" + File.separator + "rclone";
+	private String ffmpegLocation = HoardConfiguration.CONFIGURATION_LOCATION + "ffmpeg" + File.separator + "ffmpeg";
+	private String ffprobeLocation = HoardConfiguration.CONFIGURATION_LOCATION + "ffmpeg" + File.separator + "ffprobe";
+	private String rcloneLocation = HoardConfiguration.CONFIGURATION_LOCATION + "rclone" + File.separator + "rclone";
+
+	private PluginConfigurationContents pluginConfiguration;
+
+	public static class PluginConfigurationContents {
+		private String pluginsRoot = HoardConfiguration.CONFIGURATION_LOCATION + "plugins" + File.separator;
+
+		public String getPluginsRoot() {
+			return pluginsRoot;
+		}
+
+		public synchronized PluginConfigurationContents setRcloneLocation(String pluginsRoot) {
+			this.pluginsRoot = pluginsRoot;
+			return this;
+		}
+	}
 
 	public Boolean getAutoUpdate() {
 		return autoUpdate;
@@ -208,6 +223,15 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setRcloneLocation(String rcloneLocation) {
 		this.rcloneLocation = rcloneLocation;
+		return this;
+	}
+
+	public PluginConfigurationContents getPluginConfigurationInfo() {
+		return pluginConfiguration;
+	}
+
+	public synchronized ConfigurationContents setPluginConfigurationInfo(PluginConfigurationContents pluginInfo) {
+		this.pluginConfiguration = pluginInfo;
 		return this;
 	}
 }

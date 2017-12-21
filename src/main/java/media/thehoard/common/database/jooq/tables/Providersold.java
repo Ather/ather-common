@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Providersold extends TableImpl<ProvidersoldRecord> {
 
-    private static final long serialVersionUID = -1075165999;
+    private static final long serialVersionUID = 1407530282;
 
     /**
      * The reference instance of <code>thehoard.providersold</code>

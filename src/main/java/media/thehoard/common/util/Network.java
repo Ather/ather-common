@@ -3,7 +3,7 @@
  */
 package media.thehoard.common.util;
 
-import media.thehoard.common.configuration.Configuration;
+import media.thehoard.common.configuration.HoardConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
 public class Network {
 	@Deprecated
 	public static String parseCallbackAddress() {
-		String test = Configuration.contents().getBindAddress();
+		String test = HoardConfiguration.contents().getBindAddress();
 		if (test.equals("127.0.0.1") || test.equals("localhost"))
 			return test;
 		if (test.matches("^.[0-9]{1,3}/..[0-9]{1,3}/..[0-9]{1,3}/..[0-9]{1,3}"))
@@ -30,7 +30,7 @@ public class Network {
 	
 	@Deprecated
 	public static String parseAddress() {
-		String test = Configuration.contents().getBindAddress();
+		String test = HoardConfiguration.contents().getBindAddress();
 		if (test.equals("127.0.0.1") || test.equals("localhost"))
 			return getExternalAddress();
 		if (test.matches("^.[0-9]{1,3}/..[0-9]{1,3}/..[0-9]{1,3}/..[0-9]{1,3}"))
