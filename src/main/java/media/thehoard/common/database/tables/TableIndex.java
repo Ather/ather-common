@@ -7,6 +7,7 @@ package media.thehoard.common.database.tables;
  * @author Michael Haas
  *
  */
+@Deprecated
 public class TableIndex {
 	public static class Accounts {
 		public static final String TABLE_NAME = "Accounts";

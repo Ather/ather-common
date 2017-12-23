@@ -7,44 +7,51 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class HoardPluginManager extends AbstractPluginManager {
+	protected PluginClasspath pluginClasspath;
+
 	@Override
 	protected PluginRepository createPluginRepository() {
-		return null;
+		return new DefaultPluginRepository(Paths.get(HoardConfiguration.contents().getPluginConfigurationInfo().getPluginsRoot()), isDevelopment());
 	}
 
 	@Override
 	protected PluginFactory createPluginFactory() {
-		return null;
+		return new DefaultPluginFactory();
 	}
 
 	@Override
 	protected ExtensionFactory createExtensionFactory() {
-		return null;
+		return new DefaultExtensionFactory();
 	}
 
 	@Override
 	protected PluginDescriptorFinder createPluginDescriptorFinder() {
-		return null;
+		return new HoardPluginDescriptorFinder();
 	}
 
 	@Override
 	protected ExtensionFinder createExtensionFinder() {
-		return null;
+		DefaultExtensionFinder extensionFinder = new DefaultExtensionFinder(this);
+		addPluginStateListener(extensionFinder);
+
+		return extensionFinder;
 	}
 
 	@Override
 	protected PluginStatusProvider createPluginStatusProvider() {
-		return null;
+		return new DefaultPluginStatusProvider(getPluginsRoot());
 	}
 
 	@Override
 	protected PluginLoader createPluginLoader() {
-		return null;
+		return new CompoundPluginLoader()
+				.add(new DefaultPluginLoader(this, pluginClasspath))
+				.add(new JarPluginLoader(this));
 	}
 
 	@Override
 	protected VersionManager createVersionManager() {
-		return null;
+		return new DefaultVersionManager();
 	}
 
 	@Override

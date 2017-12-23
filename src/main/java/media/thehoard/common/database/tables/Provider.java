@@ -25,6 +25,7 @@ import media.thehoard.common.providers.generic.service.ProviderService;
  * @author Michael Haas
  *
  */
+@Deprecated
 @Entity
 @Table(name = "Provider")
 public class Provider<CredentialClass extends ProviderCredential<?>, ConfigurationClass extends ProviderConfiguration<?>, ProviderServiceClass extends ProviderService<?, ?, ?, ?, ?, ?>> {
