@@ -4,6 +4,8 @@ import media.thehoard.common.util.Network;
 import org.jooq.SQLDialect;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * @author Michael Haas
@@ -20,11 +22,13 @@ public class ConfigurationContents {
 	private String bindAddress = "0.0.0.0";
 	private String publicUrl = Network.getExternalAddress();
 
-	private DatabaseConfigurationContents databaseInfo;
+	private HashMap<String, DatabaseProfile> databaseProfiles = new HashMap<>();
 
-	public static class DatabaseConfigurationContents {
+	public static class DatabaseProfile {
+		private String name;
+		private Boolean isDefault = false;
 		private SQLDialect sqlDialect = SQLDialect.MYSQL;
-		private String databaseIp = "";
+		private String databaseIp = "127.0.0.1";
 		private Integer databasePort = 3306;
 		private String databaseSchema = "hoardmediaserver";
 		private String databaseUser = "";
@@ -33,11 +37,27 @@ public class ConfigurationContents {
 		private Integer connectionPoolMaxIdle = 10;
 		private Integer connectionPoolMax = 20;
 
+		public String getConnectionAlias() { return name; }
+
+		public synchronized DatabaseProfile setName(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Boolean isDefault() {
+			return this.isDefault;
+		}
+
+		public synchronized DatabaseProfile setIsDefault(Boolean isDefault) {
+			this.isDefault = isDefault;
+			return this;
+		}
+
 		public SQLDialect getSqlDialect() {
 			return sqlDialect;
 		}
 
-		public synchronized DatabaseConfigurationContents setSqlDialect(SQLDialect sqlDialect) {
+		public synchronized DatabaseProfile setSqlDialect(SQLDialect sqlDialect) {
 			this.sqlDialect = sqlDialect;
 			return this;
 		}
@@ -46,7 +66,7 @@ public class ConfigurationContents {
 			return databaseIp;
 		}
 
-		public synchronized DatabaseConfigurationContents setDatabaseIp(String databaseIp) {
+		public synchronized DatabaseProfile setDatabaseIp(String databaseIp) {
 			this.databaseIp = databaseIp;
 			return this;
 		}
@@ -55,7 +75,7 @@ public class ConfigurationContents {
 			return databasePort;
 		}
 
-		public synchronized DatabaseConfigurationContents setDatabasePort(Integer databasePort) {
+		public synchronized DatabaseProfile setDatabasePort(Integer databasePort) {
 			this.databasePort = databasePort;
 			return this;
 		}
@@ -64,7 +84,7 @@ public class ConfigurationContents {
 			return databaseSchema;
 		}
 
-		public synchronized DatabaseConfigurationContents setDatabaseSchema(String databaseSchema) {
+		public synchronized DatabaseProfile setDatabaseSchema(String databaseSchema) {
 			this.databaseSchema = databaseSchema;
 			return this;
 		}
@@ -73,7 +93,7 @@ public class ConfigurationContents {
 			return databaseUser;
 		}
 
-		public synchronized DatabaseConfigurationContents setDatabaseUser(String databaseUser) {
+		public synchronized DatabaseProfile setDatabaseUser(String databaseUser) {
 			this.databaseUser = databaseUser;
 			return this;
 		}
@@ -82,7 +102,7 @@ public class ConfigurationContents {
 			return databasePassword;
 		}
 
-		public synchronized DatabaseConfigurationContents setDatabasePassword(String databasePassword) {
+		public synchronized DatabaseProfile setDatabasePassword(String databasePassword) {
 			this.databasePassword = databasePassword;
 			return this;
 		}
@@ -91,7 +111,7 @@ public class ConfigurationContents {
 			return connectionPoolInitial;
 		}
 
-		public synchronized DatabaseConfigurationContents setConnectionPoolInitial(Integer connectionPoolInitial) {
+		public synchronized DatabaseProfile setConnectionPoolInitial(Integer connectionPoolInitial) {
 			this.connectionPoolInitial = connectionPoolInitial;
 			return this;
 		}
@@ -100,7 +120,7 @@ public class ConfigurationContents {
 			return connectionPoolMaxIdle;
 		}
 
-		public synchronized DatabaseConfigurationContents setConnectionPoolMaxIdle(Integer connectionPoolMaxIdle) {
+		public synchronized DatabaseProfile setConnectionPoolMaxIdle(Integer connectionPoolMaxIdle) {
 			this.connectionPoolMaxIdle = connectionPoolMaxIdle;
 			return this;
 		}
@@ -109,7 +129,7 @@ public class ConfigurationContents {
 			return connectionPoolMax;
 		}
 
-		public synchronized DatabaseConfigurationContents setConnectionPoolMax(Integer connectionPoolMax) {
+		public synchronized DatabaseProfile setConnectionPoolMax(Integer connectionPoolMax) {
 			this.connectionPoolMax = connectionPoolMax;
 			return this;
 		}
@@ -142,6 +162,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setAutoUpdate(Boolean autoUpdate) {
 		this.autoUpdate = autoUpdate;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -151,6 +172,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setRunOnStartup(Boolean runOnStartup) {
 		this.runOnStartup = runOnStartup;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -160,6 +182,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setPortNumber(Integer portNumber) {
 		this.portNumber = portNumber;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -169,6 +192,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setBindAddress(String bindAddress) {
 		this.bindAddress = bindAddress;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -178,15 +202,30 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setPublicUrl(String publicUrl) {
 		this.publicUrl = publicUrl;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
-	public DatabaseConfigurationContents getDatabaseInfo() {
-		return databaseInfo;
+	public HashMap<String, DatabaseProfile> getDatabaseProfiles() { return this.databaseProfiles; }
+
+	public DatabaseProfile getDatabaseProfile(String profileName) {
+		return databaseProfiles.get(profileName);
 	}
 
-	public synchronized ConfigurationContents setDatabaseInfo(DatabaseConfigurationContents databaseInfo) {
-		this.databaseInfo = databaseInfo;
+	public DatabaseProfile getDatabaseProfile() {
+		Optional<DatabaseProfile> found = HoardConfiguration.contents().getDatabaseProfiles()
+				.values().stream()
+				.filter(ConfigurationContents.DatabaseProfile::isDefault).findFirst();
+		if (found.isPresent())
+			return getDatabaseProfile(found.get().getConnectionAlias());
+
+		//TODO
+		throw new RuntimeException("Default database profile not found.");
+	}
+
+	public synchronized ConfigurationContents putDatabaseProfile(DatabaseProfile databaseProfile) {
+		this.databaseProfiles.put(databaseProfile.getConnectionAlias(), databaseProfile);
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -196,6 +235,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setAnalyzeOnScan(Boolean analyzeOnScan) {
 		this.analyzeOnScan = analyzeOnScan;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -205,6 +245,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setFfmpegLocation(String ffmpegLocation) {
 		this.ffmpegLocation = ffmpegLocation;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -214,6 +255,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setFfprobeLocation(String ffprobeLocation) {
 		this.ffprobeLocation = ffprobeLocation;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -223,6 +265,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setRcloneLocation(String rcloneLocation) {
 		this.rcloneLocation = rcloneLocation;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 
@@ -232,6 +275,7 @@ public class ConfigurationContents {
 
 	public synchronized ConfigurationContents setPluginConfigurationInfo(PluginConfigurationContents pluginInfo) {
 		this.pluginConfiguration = pluginInfo;
+		HoardConfiguration.saveJsonConfig();
 		return this;
 	}
 }
