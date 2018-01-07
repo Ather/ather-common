@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.api.client.util.DateTime;
+import com.google.api.services.drive.model.File;
 import media.thehoard.common.providers.drive.DriveConfiguration;
 import media.thehoard.common.providers.drive.Drive;
 import media.thehoard.common.providers.drive.authorization.DriveAuthorization;
@@ -16,6 +18,7 @@ import media.thehoard.common.providers.drive.authorization.DriveCredential;
 import media.thehoard.common.providers.drive.service.DriveService;
 import media.thehoard.common.providers.generic.models.ProviderFile;
 import media.thehoard.common.providers.generic.models.ProviderFileRelationship;
+import media.thehoard.common.util.hashes.HashType;
 
 /**
  * @author Michael Haas
@@ -108,5 +111,24 @@ public class DriveFile extends ProviderFile<DriveAuthorization, DriveConfigurati
 			return FileStatus.AVAILABLE;
 		else
 			return FileStatus.UNAVAILABLE;
+	}
+
+	public File toDriveFile() {
+		File tempFile = new File();
+
+		List<String> parents = new ArrayList<>();
+		for (ProviderFileRelationship relat : this.getParentFiles())
+			parents.add(new DriveFile(relat.getParentUuid()).getProviderFileId());
+		tempFile.setParents(parents);
+
+		tempFile.setName(this.getName());
+		tempFile.setMimeType(this.getMimeType());
+		tempFile.setDescription(this.getDescription());
+		//tempFile.setId(this.getProviderFileId());
+		//tempFile.setTrashed(this.getStatus() == FileStatus.TRASHED);
+		//tempFile.setCreatedTime(new DateTime(this.getDateCreated().getTime()));
+		//tempFile.setModifiedTime(new DateTime(this.getDateUpdated().getTime()));
+
+		return tempFile;
 	}
 }

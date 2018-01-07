@@ -180,7 +180,7 @@ public abstract class ProviderFile<
 				PROVIDER_FILE_LOGGER.info("Detected similar entry, updating current file: " + this.uuid.toString());
 				this.isPersisted = true;
 			}
-		} catch (DataAccessException e) {
+		} catch (DataAccessException|SQLException e) {
 			PROVIDER_FILE_LOGGER.error("Failed to attempt loading file from database: " + this.providerFileId.toString(), e);
 		}
 

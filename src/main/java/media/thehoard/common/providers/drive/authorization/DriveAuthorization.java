@@ -139,9 +139,14 @@ public class DriveAuthorization extends ProviderAuthorization<DriveAuthorization
 		}
 	}
 
+	private DriveService service = null;
+
 	@Override
-	public DriveService getProviderService() throws IOException {
-		return new DriveService(this.provider);
+	public DriveService getProviderService() {
+		if (service == null)
+			service = new DriveService(this.provider);
+
+		return service;
 	}
 
 	@Override

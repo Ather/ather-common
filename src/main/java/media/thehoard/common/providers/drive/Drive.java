@@ -26,6 +26,8 @@ public class Drive extends
 		Provider<DriveAuthorization, DriveConfiguration, DriveCredential, DriveFile, Drive, DriveService> {
 	public static Logger DRIVE_LOGGER = LoggerFactory.getLogger(Drive.class);
 
+	public static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+
 	/**
 	 * @param uuid
 	 */
@@ -53,7 +55,7 @@ public class Drive extends
 	@Override
 	public FileType getFileType(String mimeType) {
 		switch (mimeType) {
-		case "application/vnd.google-apps.folder":
+		case FOLDER_MIME_TYPE:
 			return FileType.Directory;
 		default:
 			return FileType.File;

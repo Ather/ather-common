@@ -6,7 +6,9 @@ package media.thehoard.common.providers.generic.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
+import media.thehoard.common.providers.drive.models.DriveFile;
 import media.thehoard.common.providers.generic.Provider;
 import media.thehoard.common.providers.generic.ProviderConfiguration;
 import media.thehoard.common.providers.generic.authorization.ProviderAuthorization;
@@ -35,9 +37,13 @@ public abstract class ProviderService<
 	public abstract class Cache<T extends FileClass> {
 		public abstract void build();
 
+		public abstract void verify();
+
 		public abstract void update() throws IOException;
 
-		public abstract void update(T updatedFile);
+		public abstract void update(T updatedFile, boolean updateRemote) throws IOException;
+
+		public abstract void updateParents(T driveFile, List<UUID> removeParents, List<UUID> addParents, boolean updateRemote);
 	}
 
 	public abstract Changes changes();
@@ -53,8 +59,12 @@ public abstract class ProviderService<
 	public abstract Files<?> files();
 
 	public abstract class Files<T extends FileClass> {
-		public abstract T get(String providerFileId, boolean doPersist) throws IOException;
-		
+		public abstract T get(String providerFileId, boolean attemptLoad, boolean doPersist) throws IOException;
+
+		public T get(String providerFileId, boolean doPersist) throws IOException {
+			return get(providerFileId, doPersist, doPersist);
+		}
+
 		public T get(String providerFileId) throws IOException {
 			return get(providerFileId, true);
 		}
@@ -85,6 +95,9 @@ public abstract class ProviderService<
 		}
 
 		// public abstract String generateVirtualPath(String providerFileId);
+
+		//TODO
+		public abstract T create(T file, boolean doPersist) throws IOException;
 	}
 
 	public abstract Permissions permissions();
@@ -92,4 +105,6 @@ public abstract class ProviderService<
 	public abstract class Permissions {
 
 	}
+
+	public abstract ProviderClass getProvider();
 }

@@ -250,7 +250,7 @@ public abstract class Provider<
 				this.uuid = UUID.fromString(result.get(PROVIDERS.UUID));
 				this.isPersisted = true;
 			}
-		} catch (DataAccessException e) {
+		} catch (DataAccessException|SQLException e) {
 			PROVIDER_LOGGER.error("Failed to attempt loading provider from database: " + this.uuid.toString(), e);
 		}
 

@@ -9,7 +9,7 @@
     </properties>
     <groupId>media.thehoard</groupId>
     <artifactId>the-hoard-common</artifactId>
-    <version>0.0.1.8</version>
+    <version>0.0.1.9</version>
     <dependencies>
         <dependency>
             <groupId>org.jooq</groupId>

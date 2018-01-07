@@ -14,7 +14,9 @@ import java.util.concurrent.TimeUnit;
 import media.thehoard.common.configuration.HoardConfiguration;
 import media.thehoard.common.providers.generic.Provider;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -91,9 +93,32 @@ public class ProviderCache {
 		return relationships;
 	}
 
+	public static List<UUID> getChildUuids(UUID parentFile) {
+		List<UUID> children = new ArrayList<>();
+
+		try (Connection conn = DatabaseConnector.getConnection()) {
+			Result<Record1<String>> fetch = DSL.using(HoardConfiguration.getJooqConfiguration(conn))
+					.select(PROVIDERFILERELATIONSHIPS.FILEUUID).from(PROVIDERFILERELATIONSHIPS)
+					.where(PROVIDERFILERELATIONSHIPS.PARENTUUID.eq(parentFile.toString())).fetch();
+			for (Record rs : fetch)
+				children.add(UUID.fromString(rs.get(PROVIDERFILERELATIONSHIPS.FILEUUID)));
+
+
+		} catch (SQLException e) {
+			PROVIDER_CACHE_LOGGER.error("Failed to load file children: " + parentFile.toString(), e);
+		}
+
+		return children;
+	}
+
+	/* TODO
+	private static <FileType extends ProviderFile<?, ?, ?, ?, ?, ?>> List<FileType> getChildrenFiles(UUID parentFile) {
+		getChildUuids(parentFile).stream().map(e -> new FileType(e));
+	}*/
+
 	private static ProviderFile<?, ?, ?, ?, ?, ?> loadFile(UUID key) {
 		try (Connection conn = DatabaseConnector.getConnection()) {
-			Record rs = DSL.using(DatabaseConnector.getConnection(), HoardConfiguration.contents().getDatabaseInfo().getSqlDialect())
+			Record rs = DSL.using(DatabaseConnector.getConnection(), HoardConfiguration.contents().getDatabaseProfile().getSqlDialect())
 					.select(PROVIDERFILES.PROVIDERUUID).from(PROVIDERFILES)
 					.where(PROVIDERFILES.UUID.eq(key.toString())).fetchOne();
 
