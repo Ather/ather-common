@@ -1,9 +1,13 @@
 package com.atherapp.common.io.providers
 
+import com.atherapp.common.io.MultiOutputStream
+import org.apache.commons.codec.binary.Hex
+import org.apache.commons.io.IOUtils
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.security.DigestInputStream
+import java.security.DigestOutputStream
 import java.security.MessageDigest
 
 object HashExceptions {
@@ -46,12 +50,17 @@ enum class Hash(
         fun supported() = Hash.values().filter { h -> h.width != -1 && h.supported }.toSet()
 
         /**
-         * @return Map of hash types and their hashers
+         * @return Map of [Hash]es as the key, with a pair of both a [DigestOutputStream] (using the hash's MessageDigest),
+         * and a [ByteArrayOutputStream], which is the underlying [OutputStream] to the [DigestOutputStream]
          */
-        fun hashers(types: Set<Hash> = supported()): Map<Hash, MessageDigest> {
-            val map = HashMap<Hash, MessageDigest>(types.size)
-            for (type in types)
-                map[type] = type.hasher()
+        fun hashers(types: Set<Hash> = supported()): Map<Hash, Pair<DigestOutputStream, ByteArrayOutputStream>> {
+            val map = HashMap<Hash, Pair<DigestOutputStream, ByteArrayOutputStream>>(types.size)
+            for (type in types) {
+                if (type.hasher != null) {
+                    val baos = ByteArrayOutputStream()
+                    map[type] = DigestOutputStream(baos, type.hasher) to baos
+                }
+            }
             return map
         }
 
@@ -69,15 +78,17 @@ enum class Hash(
          */
         fun streamTypes(input: InputStream, set: Set<Hash>): Map<Hash, String> {
             val hashers = hashers(set)
-            val hashOut = hashers.toMultiOutputStream()
+            val hashOut = hashers.toMultiOutputStream(input)
+
+            IOUtils.copy(input, hashOut)
+
+            val hashes = mutableMapOf<Hash, String>()
+            for ((hash, hasher) in hashers)
+                hashes[hash] = Hex.encodeHexString(hasher.second.toByteArray())
+
+            return hashes
         }
 
-        private fun Map<Hash, MessageDigest>.toMultiOutputStream(): OutputStream {
-            val streams = mutableListOf<OutputStream>()
-            for ((hash, hasher) in this) {
-                streams.add(hasher)
-            }
-        }
+        private fun Map<Hash, Pair<DigestOutputStream, ByteArrayOutputStream>>.toMultiOutputStream(input: InputStream): OutputStream = MultiOutputStream(*(this.map { (_, hasher) -> hasher.first }).toTypedArray())
     }
 }
-
