@@ -1,10 +1,18 @@
 package com.atherapp.common.io.providers
 
+import com.atherapp.common.api.modules.io.providers.Provider
 import com.atherapp.common.api.modules.io.providers.ProviderRegistrationInfo
+import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.time.LocalTime
 
 typealias EntryType = Int
+
+/**
+ * Stores the Provider registration info, the config name of the provider, and the path on that provider
+ */
+typealias ProviderTriple = Triple<ProviderRegistrationInfo, String, String>
 
 object FileProviders {
     internal var registry: MutableList<ProviderRegistrationInfo> = mutableListOf()
@@ -23,7 +31,8 @@ object FileProviders {
      * Looks for a [ProviderRegistrationInfo] object for the name passed in
      * Services are looked for inside the registry
      */
-    fun find(name: String) = registry.firstOrNull { it.name == name } ?: throw FileSystemExceptions.FileSystemNotFoundException()
+    fun find(name: String) = registry.firstOrNull { it.name == name }
+            ?: throw FileSystemExceptions.FileSystemNotFoundException()
 
     /**
      * Deconstructs a path into its config name, provider path,
@@ -33,7 +42,7 @@ object FileProviders {
      *
      * TODO TODO TODO
      */
-    fun parseRemote(path: String) : Triple<ProviderRegistrationInfo, String, String> {
+    fun parseRemote(path: String): ProviderTriple {
         val parts = matcher.findAll(path).toList()
 
         var providerName: String = "local"
@@ -43,7 +52,70 @@ object FileProviders {
         if (!DriveLetter.isDriveLetter(parts[1].value)) {
             configName = parts[1].value
             providerPath = parts[2].value
-            //providerName = TODO Config implementation
+            providerName = "" //TODO create config system, this call is `ConfigFileGet(configName, "type")` in Go
+            if (providerName == "")
+                throw FileSystemExceptions.FileSystemNotFoundException()
+        }
+
+        providerPath = providerPath.replace(File.separatorChar, '/')
+        return Triple(find(providerName), configName, providerPath)
+    }
+
+    /**
+     * Makes a new [Provider] object from the path.
+     *
+     * The path is of the form remote:path
+     *
+     * @throws FileSystemExceptions.FileSystemNotFoundException if the provider can't be found in the config
+     *
+     * On windows, avoid single character remote names as they can be mixed with drive letters
+     */
+    fun newProvider(path: String): Provider {
+        val rem = parseRemote(path)
+        return rem.first.newFileSystem(rem.second, rem.third)
+    }
+
+    /**
+     * Creates a local Provider in the OS's temporary directory.
+     *
+     * No cleanup is performed, the caller must call purge on the Provider themselves
+     */
+    fun temporaryLocalProvider(): Provider {
+        val path = Files.createTempDirectory("ather-provider-spool")
+        return newProvider(path.toAbsolutePath().toString())
+    }
+
+    /**
+     * @return Whether a file remote exists,
+     * false if the remote is a directory
+     *
+     * @throws IOException if the object retrieval fails, and the reason isn't [FileSystemExceptions.ObjectNotFoundException], [FileSystemExceptions.NotAFileException], or [FileSystemExceptions.PermissionDeniedException]
+     */
+    fun fileExists(provider: Provider, remote: String): Boolean {
+        try {
+            provider.newObject(remote)
+        } catch (e: IOException) {
+            if (e is FileSystemExceptions.ObjectNotFoundException || e is FileSystemExceptions.NotAFileException || e is FileSystemExceptions.PermissionDeniedException)
+                return false
+            throw e
+        }
+
+        return true
+    }
+
+    /**
+     * Works out the modify window for providers passed int, and sets
+     * the config's modifyWindow.
+     *
+     * This is the largest modify window of all the providers in use, adn the
+     * user configured value.
+     *
+     * TODO This isn't used in the original application, and requires calls to the config, which
+     * doesn't exist as of this date 04/29/18
+     */
+    fun calculateModifyWindows(vararg providers: Provider) {
+        for (provider in providers) {
+
         }
     }
 }
