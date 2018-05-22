@@ -31,7 +31,7 @@ public class ConfigurationContents {
 		private SQLDialect sqlDialect = SQLDialect.MYSQL;
 		private String databaseIp = "127.0.0.1";
 		private Integer databasePort = 3306;
-		private String databaseSchema = "ather";
+		private String databaseSchema = "athermediaserver";
 		private String databaseUser = "";
 		private String databasePassword = "";
 		private Integer connectionPoolInitial = 5;

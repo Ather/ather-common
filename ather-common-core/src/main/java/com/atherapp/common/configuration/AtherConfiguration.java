@@ -30,15 +30,15 @@ public class AtherConfiguration {
 	/*
 	 * Default configuration file name
 	 */
-	private static final String CONFIGURATION_FILE_NAME = "ather.json";
+	private static final String CONFIGURATION_FILE_NAME = "athermediaserver.json";
 
 	private static final String APPLICATION_NAME =
-			SystemUtils.IS_OS_WINDOWS ? "The Hoard Media Server" : "ather";
+			SystemUtils.IS_OS_WINDOWS ? "The Hoard Media Server" : "athermediaserver";
 
 	/*
 	 * Default configuration file location This is either
-	 * ~/.config/hoardmedia/ather/ather.json on Non-windows operating systems, and
-	 * %LOCALAPPDATA%\The Hoard Media\The Hoard Media Server\ather.json on Windows.
+	 * ~/.config/hoardmedia/athermediaserver/athermediaserver.json on Non-windows operating systems, and
+	 * %LOCALAPPDATA%\The Hoard Media\The Hoard Media Server\athermediaserver.json on Windows.
 	 */
 	public static final String CONFIGURATION_LOCATION = SystemUtils.IS_OS_WINDOWS
 			? System
