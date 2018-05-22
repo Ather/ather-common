@@ -81,7 +81,7 @@ object FileProviders {
      * No cleanup is performed, the caller must call purge on the Provider themselves
      */
     fun temporaryLocalProvider(): Provider {
-        val path = Files.createTempDirectory("ather-provider-spool")
+        val path = Files.createTempDirectory("athermediaserver-provider-spool")
         return newProvider(path.toAbsolutePath().toString())
     }
 

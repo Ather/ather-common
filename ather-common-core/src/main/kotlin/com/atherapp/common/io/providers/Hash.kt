@@ -27,7 +27,7 @@ enum class Hash(
     /**
      * Indicates SHA-1 Support
      */
-    SHA1(40, false, "SHA-1"),
+    SHA1(40, true, "SHA-1"),
     /**
      * Indicates Dropbox special hash
      * @see <a href="https://www.dropbox.com/developers/reference/content-hash">Dropbox Content Hash</a>

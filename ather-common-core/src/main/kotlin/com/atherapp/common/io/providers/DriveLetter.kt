@@ -8,7 +8,7 @@ object DriveLetter {
             if (name.length != 1)
                 return false
             val c = name[0]
-            (c in 'a'..'z') || (c in 'A'..'Z')
+            c.isLetter()
         } else
             false
     }
