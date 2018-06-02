@@ -142,18 +142,13 @@ public class ConfigurationContents {
 	private String ffprobeLocation = AtherConfiguration.CONFIGURATION_LOCATION + "ffmpeg" + File.separator + "ffprobe";
 	private String rcloneLocation = AtherConfiguration.CONFIGURATION_LOCATION + "rclone" + File.separator + "rclone";
 
-	private PluginConfigurationContents pluginConfiguration;
+	private PluginConfigurationContents pluginConfiguration = new PluginConfigurationContents();
 
 	public static class PluginConfigurationContents {
 		private String pluginsRoot = AtherConfiguration.CONFIGURATION_LOCATION + "modules" + File.separator;
 
 		public String getPluginsRoot() {
-			return pluginsRoot;
-		}
-
-		public synchronized PluginConfigurationContents setRcloneLocation(String pluginsRoot) {
-			this.pluginsRoot = pluginsRoot;
-			return this;
+			return pluginsRoot == null? AtherConfiguration.CONFIGURATION_LOCATION + "modules" + File.separator : pluginsRoot;
 		}
 	}
 

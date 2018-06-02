@@ -8,6 +8,7 @@
     <modules>
         <module>ather-common-core</module>
         <module>ather-common-api</module>
+        <module>ather-common-modules</module>
     </modules>
 
     <groupId>com.atherapp</groupId>

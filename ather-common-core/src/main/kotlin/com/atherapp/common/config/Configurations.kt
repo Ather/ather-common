@@ -32,7 +32,7 @@ interface PersistentConfiguration : Configuration {
 abstract class BaseConfiguration: PersistentConfiguration {
     abstract override val configName: String
 
-    protected lateinit var json: JsonObject
+    lateinit var json: JsonObject
 
     init {
         this.load()
@@ -40,6 +40,7 @@ abstract class BaseConfiguration: PersistentConfiguration {
 
     /**
      * Get the JsonElement at the given key, or null if it doesn't exist
+     * TODO Support default values, perhaps with an elvis operator calling a default json object
      */
     override operator fun get(key: String): JsonElement? = json[key]
 
@@ -54,7 +55,7 @@ abstract class BaseConfiguration: PersistentConfiguration {
     /**
      * Retrieve the string representation of the Json from the persistence layer
      */
-    protected abstract fun loadJson(): String
+    abstract fun loadJson(): String
 
     /**
      * Call loadJson and set the internal [json] value
@@ -150,16 +151,24 @@ class UnionConfiguration(
 class LocalConfiguration(
         override val configName: String,
         val relativePath: String = configName
-) : BaseConfiguration()
+) : BaseConfiguration() {
+    override fun loadJson(): String {
+        TODO("not implemented")
+    }
+
+    override fun save() {
+        TODO("not implemented")
+    }
+}
 
 /**
  * Database configuration stored on a database system.
  * To create one, you pass the ID/Name of a database profile configured on the system
  *
  * TODO Consider that this will have to assume a local configuration exists to get database info
- */
+ *
 class DatabaseConfiguration(
         override val configName: String,
         //TODO Use default database profile
         val databaseProfile: String = ConfigurationManager
-) : BaseConfiguration()
+) : BaseConfiguration()*/

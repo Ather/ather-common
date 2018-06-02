@@ -25,6 +25,10 @@ object ConfigurationManager {
     /**
      * Get the config relating to a name, optionally create new configs of the specified type.
      * If non exists, return null
+     *
+     * @param config Configuration name to use
+     * @param createNew Whether to create a new configuration if it doesn't exist, defaults to true
+     * @param newConfigClass The BaseConfiguration class to use if creating a new configuration, defaults to [LocalConfiguration]
      */
     operator fun get(config: String, createNew: Boolean = true, newConfigClass: KClass<out BaseConfiguration>? = if (createNew) LocalConfiguration::class else null): BaseConfiguration? {
         // Return the config from the internal list, otherwise return a new config if createNew is true and the config class isn't null
