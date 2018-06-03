@@ -32,7 +32,7 @@ interface ModuleDependency : Dependency {
 data class DataModuleDependency(
         override val group: String,
         override val artifact: String,
-        override val tag: String
+        override val tag: String = "latest"
 ) : ModuleDependency
 
 /**
@@ -56,5 +56,5 @@ interface JarDependency {
 data class DataJarDependency(
         override val groupId: String,
         override val artifactId: String,
-        override val version: String
+        override val version: String = "LATEST"
 ) : JarDependency

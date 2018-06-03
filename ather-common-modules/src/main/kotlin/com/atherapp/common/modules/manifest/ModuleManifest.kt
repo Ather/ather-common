@@ -4,6 +4,20 @@ import com.atherapp.common.modules.manifest.permissions.ModulePermissions
 import com.google.gson.JsonElement
 
 /**
+ * Exception indicating that a module manifest is invalid
+ */
+class IllegalManifestException(
+        /**
+         * Detail message of what is wrong with the manifest
+         */
+        override val message: String,
+        /**
+         * The optional cause of the exception. This is normally used if the JSON is illegal.
+         */
+        override val cause: Throwable? = null
+) : RuntimeException(message, cause)
+
+/**
  * Manifest for a module (module.json), which stores information about the module,
  * including how to load it, dependencies, declared endpoints, permissions, and other
  * general information. It
@@ -66,6 +80,11 @@ interface ModuleManifest {
      */
     val softDependencies: List<ModuleDependency>
     /**
+     * Logging prefix to use. If not specified, a class logger is normally used
+     * TODO Enable this with KLogging
+     */
+    val logPrefix: String?
+    /**
      * Modules which have to be loaded after this module.
      */
     val loadBefore: List<Dependency>
@@ -104,6 +123,7 @@ data class DataModuleManifest(
         //TODO val externalDependencies,
         override val dependencies: List<ModuleDependency> = emptyList(),
         override val softDependencies: List<ModuleDependency> = emptyList(),
+        override val logPrefix: String? = null,
         override val loadBefore: List<Dependency> = emptyList(),
         override val endpoints: ModuleEndpoints = emptyMap(),
         override val permissionPrefix: String? = null,
