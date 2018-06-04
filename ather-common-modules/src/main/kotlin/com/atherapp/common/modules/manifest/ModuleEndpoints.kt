@@ -56,6 +56,16 @@ interface Endpoint {
     val usage: String?
 }
 
+internal data class MutableDataEndpoint(
+        override var methods: MutableList<HttpMethod> = mutableListOf(HttpMethod.GET),
+        override var aliases: MutableList<String> = mutableListOf(),
+        override var description: String? = null,
+        override var permissions: MutableList<String> = mutableListOf(),
+        override var hidden: Boolean = false,
+        override var permissionMessage: String = "You don't have permission to use this endpoint.",
+        override var usage: String? = null
+) : Endpoint
+
 data class DataEndpoint(
         override val methods: List<HttpMethod> = listOf(HttpMethod.GET),
         override val aliases: List<String> = emptyList(),

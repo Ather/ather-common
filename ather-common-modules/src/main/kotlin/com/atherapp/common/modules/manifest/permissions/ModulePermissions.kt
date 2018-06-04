@@ -34,6 +34,12 @@ interface Permission {
     val default: PermissionDefault
 }
 
+internal data class MutableDataPermission(
+        override var description: String? = null,
+        override var children: MutableMap<String, Boolean> = mutableMapOf(),
+        override var default: PermissionDefault = PermissionDefault.FALSE
+) : Permission
+
 data class DataPermission(
         override val description: String? = null,
         override val children: PermissionChildren? = null,

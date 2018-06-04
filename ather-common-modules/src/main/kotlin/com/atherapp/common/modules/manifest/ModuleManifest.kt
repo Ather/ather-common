@@ -1,6 +1,7 @@
 package com.atherapp.common.modules.manifest
 
 import com.atherapp.common.modules.manifest.permissions.ModulePermissions
+import com.atherapp.common.modules.manifest.permissions.Permission
 import com.google.gson.JsonElement
 
 /**
@@ -20,7 +21,7 @@ class IllegalManifestException(
 /**
  * Manifest for a module (module.json), which stores information about the module,
  * including how to load it, dependencies, declared endpoints, permissions, and other
- * general information. It
+ * general information.
  */
 interface ModuleManifest {
     /**
@@ -89,14 +90,14 @@ interface ModuleManifest {
      */
     val loadBefore: List<Dependency>
     /**
+     * Prefix to expand on any permission nodes starting with a "$"
+     */
+    val permissionPrefix: String?
+    /**
      * Endpoint declarations for if the module is going to build directly onto the internal API.
      * This is designed as a security feature to tell users what their modules can/do change/access.
      */
     val endpoints: ModuleEndpoints
-    /**
-     * Prefix to expand on any permission nodes starting with a "$"
-     */
-    val permissionPrefix: String?
     /**
      * Permission declarations for if the module has any permissions for its functionality.
      * This is primarily used along-side endpoints.
@@ -107,6 +108,29 @@ interface ModuleManifest {
      */
     val additionalProperties: Map<String, Any>
 }
+
+internal data class MutableModuleManifest(
+        override var group: String = "",
+        override var artifact: String = "",
+        override var tag: String = "",
+        override var alias: String? = null,
+        override var description: String? = null,
+        override var loadStage: ModuleLoadStage = ModuleLoadStage.POST_API,
+        override var authors: MutableList<String> = mutableListOf(),
+        override var website: String? = null,
+        override var mainClass: String = "",
+        override var database: Boolean = false,
+        override var jarDependencies: MutableList<JarDependency> = mutableListOf(),
+        //TODO var externalDependencies,
+        override var dependencies: MutableList<ModuleDependency> = mutableListOf(),
+        override var softDependencies: MutableList<ModuleDependency> = mutableListOf(),
+        override var logPrefix: String? = null,
+        override var loadBefore: MutableList<Dependency> = mutableListOf(),
+        override var permissionPrefix: String? = "",
+        override var endpoints: MutableMap<String, Endpoint> = mutableMapOf(),
+        override var permissions: MutableMap<String, Permission> = mutableMapOf(),
+        override var additionalProperties: MutableMap<String, JsonElement> = mutableMapOf()
+) : ModuleManifest
 
 data class DataModuleManifest(
         override val group: String,
@@ -125,8 +149,8 @@ data class DataModuleManifest(
         override val softDependencies: List<ModuleDependency> = emptyList(),
         override val logPrefix: String? = null,
         override val loadBefore: List<Dependency> = emptyList(),
-        override val endpoints: ModuleEndpoints = emptyMap(),
         override val permissionPrefix: String? = null,
+        override val endpoints: ModuleEndpoints = emptyMap(),
         override val permissions: ModulePermissions = emptyMap(),
         override val additionalProperties: Map<String, JsonElement> = emptyMap()
 ) : ModuleManifest
