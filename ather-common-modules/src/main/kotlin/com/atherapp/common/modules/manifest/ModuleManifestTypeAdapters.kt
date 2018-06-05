@@ -21,27 +21,27 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                     if (peek() == JsonToken.NAME) {
                         when (nextName()) {
                             "group" -> {
-                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal group name: $path")
-                                group = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal group name: $path")
+                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal group name, must be a string: $path")
+                                group = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal group name, cannot be blank: $path")
                             }
                             "artifact" -> {
-                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal artifact name: $path")
-                                artifact = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal artifact name: $path")
+                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal artifact name, must be a string: $path")
+                                artifact = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal artifact name, cannot be blank: $path")
                             }
                             "tag" -> {
-                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal tag: $path")
-                                tag = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal tag: $path")
+                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal tag, must be a string: $path")
+                                tag = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal tag, cannot be blank: $path")
                             }
                             "alias" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal alias: $path")
-                                alias = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal alias: $path") }
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal alias, must be a string or null: $path")
+                                alias = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal alias, cannot be blank: $path") }
                             }
                             "description" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal description: $path")
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal description, must be a string or null: $path")
                                 description = nextStringOrNull()
                             }
                             "loadStage" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal load stage: $path")
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal load stage, must be a string or null: $path")
                                 loadStage = nextStringOrNull()?.let {
                                     try {
                                         ModuleLoadStage.valueOf(it)
@@ -59,27 +59,27 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                 ?: throw IllegalManifestException("Illegal author: $path"))
                                     }
                                     if (peek() == JsonToken.END_ARRAY) endArray()
-                                    else throw IllegalManifestException("Illegal JSON in authors section")
+                                    else throw IllegalManifestException("The authors section does not end with an array token \"]\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in authors section: $path")
+                                    throw IllegalManifestException("The authors section does not start with an array token \"[\": $path")
                             }
                             "website" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal website: $path")
-                                website = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal website: $path") }
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal website, must be a string or null: $path")
+                                website = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal website, cannot be blank: $path") }
                             }
                             "mainClass" -> {
-                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal entry point (mainClass): $path")
-                                mainClass = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal entry point (mainClass): $path")
+                                if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal entry point (mainClass), must be a string: $path")
+                                mainClass = nextString().takeIf { it.isNotBlank() } ?: throw IllegalManifestException("Illegal entry point (mainClass), cannot be blank: $path")
                             }
                             "database" -> {
-                                if (peek() != JsonToken.BOOLEAN) throw IllegalManifestException("Illegal database usage value: $path")
+                                if (peek() != JsonToken.BOOLEAN) throw IllegalManifestException("Illegal database usage value, must be a boolean: $path")
                                 database = nextBoolean()
                             }
                             "jarDependencies" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
                                     beginArray()
                                     while (hasNext()) {
-                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal jar dependencies section: $path")
+                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal jar dependencies section, must contain only strings: $path")
                                         val dependency = nextString()
                                         jarDependencies.add(dependency.split(":").run {
                                             when (size) {
@@ -90,21 +90,21 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         })
                                     }
                                     if (peek() == JsonToken.END_ARRAY) endArray()
-                                    else throw IllegalManifestException("Illegal JSON in jar dependencies section")
+                                    else throw IllegalManifestException("The jar dependencies section does not end with an array token \"]\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in jar dependencies section: $path")
+                                    throw IllegalManifestException("The jar dependencies section does not start with an array token \"[\": $path")
                             }
                             "dependencies" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
                                     beginArray()
                                     while (hasNext()) {
-                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal dependencies section: $path")
+                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal dependency section, must contain only strings: $path")
                                         dependencies.add(moduleDependencyFromString(nextString()))
                                     }
                                     if (peek() == JsonToken.END_ARRAY) endArray()
-                                    else throw IllegalManifestException("Illegal JSON in dependencies section")
+                                    else throw IllegalManifestException("The dependencies section does not end with an array token \"]\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in dependencies section: $path")
+                                    throw IllegalManifestException("The dependencies section does not start with an array token \"[\": $path")
                             }
                             "softDependencies" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
@@ -114,19 +114,19 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         dependencies.add(moduleDependencyFromString(nextString()))
                                     }
                                     if (peek() == JsonToken.END_ARRAY) endArray()
-                                    else throw IllegalManifestException("Illegal JSON in soft dependencies section")
+                                    else throw IllegalManifestException("The soft dependencies section does not end with an array token \"]\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in soft dependencies section: $path")
+                                    throw IllegalManifestException("The soft dependencies section does not start with an array token \"[\": $path")
                             }
                             "logPrefix" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal log prefix: $path")
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal log prefix, must be a string or null: $path")
                                 logPrefix = nextStringOrNull()
                             }
                             "loadBefore" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
                                     beginArray()
                                     while (hasNext()) {
-                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal loadBefore section: $path")
+                                        if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal load before id: $path")
                                         val moduleId = nextString()
                                         loadBefore.add(moduleId.split("/").run {
                                             if (size != 2)
@@ -135,13 +135,13 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         })
                                     }
                                     if (peek() == JsonToken.END_ARRAY) endArray()
-                                    else throw IllegalManifestException("Illegal JSON in loadBefore section")
+                                    else throw IllegalManifestException("The load before section does not end with an array token \"]\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in loadBefore section: $path")
+                                    throw IllegalManifestException("The load before section does not start with an array token \"[\": $path")
                             }
                             "permissionPrefix" -> {
-                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal module permission prefix: $path")
-                                permissionPrefix = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal module permission prefix: $path") }
+                                if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal module permission prefix, must be a string or null: $path")
+                                permissionPrefix = nextStringOrNull().also { if (it != null && it.isBlank()) throw IllegalManifestException("Illegal module permission prefix, cannot be blank: $path") }
                             }
                             "endpoints" -> {
                                 if (peek() == JsonToken.BEGIN_OBJECT) {
@@ -151,7 +151,7 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         val endpointData = MutableDataEndpoint().apply {
                                             if (peek() == JsonToken.NAME) {
                                                 if (group == "" || artifact == "")
-                                                    throw IllegalManifestException("The endpoints section must be declared after the group and artifact names.")
+                                                    throw IllegalManifestException("The group and artifact names must be declared before the endpoints section")
                                                 endpoint = expandEndpoint(group, artifact, nextName())
                                                 beginObject()
                                                 when (nextName()) {
@@ -171,9 +171,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                                 }
                                                                         ?: throw IllegalManifestException("Illegal endpoint HTTP method: $path"))
                                                             }
-                                                            endArray()
+                                                            if (peek() == JsonToken.END_ARRAY) endArray()
+                                                            else throw IllegalManifestException("An endpoint's method list does not end with an array token \"]\": $path")
                                                         } else
-                                                            throw IllegalManifestException("Illegal endpoint declaration: $path")
+                                                            throw IllegalManifestException("An endpoint's method list does not start with an array token \"[\": $path")
                                                     }
                                                     "aliases" -> {
                                                         if (peek() == JsonToken.BEGIN_ARRAY) {
@@ -182,8 +183,11 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                                 if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal endpoint alias declaration: $path")
                                                                 aliases.add(expandEndpoint(group, artifact, nextString(), true))
                                                             }
-                                                            endArray()
+                                                            if (peek() == JsonToken.END_ARRAY) endArray()
+                                                            else throw IllegalManifestException("An endpoint's alias list does not end with an array token \"]\": $path")
                                                         }
+                                                        else
+                                                            throw IllegalManifestException("An endpoint's alias list does not start with an array token \"[\": $path")
                                                     }
                                                     "description" -> {
                                                         if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal endpoint description: $path")
@@ -196,33 +200,37 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                                 if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal endpoint permission: $path")
                                                                 permissions.add(expandPermission(permissionPrefix, nextString()))
                                                             }
-                                                            endArray()
+                                                            if (peek() == JsonToken.END_ARRAY) endArray()
+                                                            else throw IllegalManifestException("An endpoint's permission list does not end with an array token \"]\": $path")
                                                         }
+                                                        else
+                                                            throw IllegalManifestException("An endpoint's permission list does not start with an array token \"[\": $path")
                                                     }
                                                     "hidden" -> {
-                                                        if (peek() != JsonToken.BOOLEAN) throw IllegalManifestException("Illegal 'hidden' value for endpoint: $path")
+                                                        if (peek() != JsonToken.BOOLEAN) throw IllegalManifestException("Illegal 'hidden' value for endpoint, must be a boolean: $path")
                                                         hidden = nextBoolean()
                                                     }
                                                     "permissionMessage" -> {
-                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal endpoint permission message: $path")
+                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal endpoint permission message, must be a string or null: $path")
                                                         permissionMessage = nextStringOrNull() ?: "You don't have permission to use this endpoint."
                                                     }
                                                     "usage" -> {
-                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal endpoint usage message: $path")
+                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal endpoint usage message, must be a string or null: $path")
                                                         usage = nextStringOrNull()
                                                     }
-                                                    else -> throw IllegalManifestException("Extra section in endpoint declaration")
+                                                    else -> throw IllegalManifestException("Extra section in endpoint declaration: $path")
                                                 }
-                                                endObject()
+                                                if (peek() == JsonToken.END_OBJECT) endObject()
+                                                else throw IllegalManifestException("An endpoint node does not end with an object token \"}\": $path")
                                             } else
-                                                throw IllegalManifestException("Illegal endpoint declaration: $path")
+                                                throw IllegalManifestException("An endpoint node does not start with an object token \"{\": $path")
                                         }
                                         endpoints[endpoint] = endpointData
                                     }
                                     if (peek() == JsonToken.END_OBJECT) endObject()
-                                    else throw IllegalManifestException("Illegal JSON in authors section")
+                                    else throw IllegalManifestException("The endpoints section does not end with an object token \"}\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in endpoints section: $path")
+                                    throw IllegalManifestException("The endpoints section does not start with an object token \"{\": $path")
                             }
                             "permissions" -> {
                                 if (peek() == JsonToken.BEGIN_OBJECT) {
@@ -235,7 +243,7 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                 beginObject()
                                                 when (nextName()) {
                                                     "description" -> {
-                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal permission description: $path")
+                                                        if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal permission description, must be a string or null: $path")
                                                         description = nextStringOrNull()
                                                     }
                                                     "children" -> {
@@ -249,11 +257,12 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                                     } else
                                                                         throw IllegalManifestException("Illegal permission child, must use a boolean value: $path")
                                                                 } else
-                                                                    throw IllegalManifestException("Illegal permission child: $path")
+                                                                    throw IllegalManifestException("Illegal permission child, it must start with a JSON name: $path")
                                                             }
-                                                            endObject()
+                                                            if (peek() == JsonToken.END_OBJECT) endObject()
+                                                            else throw IllegalManifestException("A permission child does not end with an object token \"}\": $path")
                                                         } else
-                                                            throw IllegalManifestException("Illegal permission children declaration: $path")
+                                                            throw IllegalManifestException("A permission child does not start with an object token \"{\": $path")
                                                     }
                                                     "default" -> {
                                                         if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal permission default: $path")
@@ -261,22 +270,22 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                             try {
                                                                 PermissionDefault.valueOf(it)
                                                             } catch (e: IllegalArgumentException) {
-                                                                throw IllegalManifestException("Illegal permission default: $it @ $path")
+                                                                throw IllegalManifestException("Illegal permission default value: $it @ $path")
                                                             }
-                                                        } ?: throw IllegalManifestException("Illegal permission default: $path")
+                                                        } ?: throw IllegalManifestException("Illegal permission default value cannot be null: $path")
                                                     }
                                                 }
                                                 if (peek() == JsonToken.END_OBJECT) endObject()
-                                                else throw IllegalManifestException("Illegal JSON in permissions section")
+                                                else throw IllegalManifestException("A permission node does not end with an object token \"}\": $path")
                                             } else
-                                                throw IllegalManifestException("Illegal permission node: $path")
+                                                throw IllegalManifestException("A permission node does not start with an object token \"{\": $path")
                                         }
                                         permissions[permission] = permissionData
                                     }
                                     if (peek() == JsonToken.END_OBJECT) endObject()
-                                    else throw IllegalManifestException("Illegal JSON in permissions section")
+                                    else throw IllegalManifestException("The permissions section does not end with an object token \"}\": $path")
                                 } else
-                                    throw IllegalManifestException("Illegal JSON in permissions section: $path")
+                                    throw IllegalManifestException("The permissions section does not start with an object token \"{\": $path")
                             }
                             else -> {
                                 if (peek() != JsonToken.NULL)
@@ -284,10 +293,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                             }
                         }
                     } else
-                        throw IllegalManifestException("This section of the manifest does not start with a name: $path")
+                        throw IllegalManifestException("All top level values in the manifest must use JSON name tokens: $path")
                 }
                 if (peek() == JsonToken.END_OBJECT) endObject()
-                else throw IllegalManifestException("Illegal JSON in main section")
+                else throw IllegalManifestException("The manifest does not end with an object token \"}\"")
             } else
                 throw IllegalManifestException("The manifest does not start with an object token \"{\"")
         }
