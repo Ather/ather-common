@@ -1,9 +1,9 @@
 package com.atherapp.common.modules.manifest
 
-import com.atherapp.common.json.Json
 import com.atherapp.common.json.gson.nextStringOrNull
 import com.atherapp.common.modules.manifest.permissions.MutableDataPermission
 import com.atherapp.common.modules.manifest.permissions.PermissionDefault
+import com.github.salomonbrys.kotson.jsonObject
 import com.github.salomonbrys.kotson.string
 import com.github.salomonbrys.kotson.toJson
 import com.github.salomonbrys.kotson.typeAdapter
@@ -58,9 +58,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         authors.add(nextString().takeIf { it.isNotBlank() }
                                                 ?: throw IllegalManifestException("Illegal author: $path"))
                                     }
-                                    endArray()
+                                    if (peek() == JsonToken.END_ARRAY) endArray()
+                                    else throw IllegalManifestException("Illegal JSON in authors section")
                                 } else
-                                    throw IllegalManifestException("Illegal authors section: $path")
+                                    throw IllegalManifestException("Illegal JSON in authors section: $path")
                             }
                             "website" -> {
                                 if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal website: $path")
@@ -88,9 +89,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                             }
                                         })
                                     }
-                                    endArray()
+                                    if (peek() == JsonToken.END_ARRAY) endArray()
+                                    else throw IllegalManifestException("Illegal JSON in jar dependencies section")
                                 } else
-                                    throw IllegalManifestException("Illegal jar dependencies section: $path")
+                                    throw IllegalManifestException("Illegal JSON in jar dependencies section: $path")
                             }
                             "dependencies" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
@@ -99,9 +101,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal dependencies section: $path")
                                         dependencies.add(moduleDependencyFromString(nextString()))
                                     }
-                                    endArray()
+                                    if (peek() == JsonToken.END_ARRAY) endArray()
+                                    else throw IllegalManifestException("Illegal JSON in dependencies section")
                                 } else
-                                    throw IllegalManifestException("Illegal dependencies section: $path")
+                                    throw IllegalManifestException("Illegal JSON in dependencies section: $path")
                             }
                             "softDependencies" -> {
                                 if (peek() == JsonToken.BEGIN_ARRAY) {
@@ -110,9 +113,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         if (peek() != JsonToken.STRING) throw IllegalManifestException("Illegal soft dependency: $path")
                                         dependencies.add(moduleDependencyFromString(nextString()))
                                     }
-                                    endArray()
+                                    if (peek() == JsonToken.END_ARRAY) endArray()
+                                    else throw IllegalManifestException("Illegal JSON in soft dependencies section")
                                 } else
-                                    throw IllegalManifestException("Illegal soft dependencies section: $path")
+                                    throw IllegalManifestException("Illegal JSON in soft dependencies section: $path")
                             }
                             "logPrefix" -> {
                                 if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal log prefix: $path")
@@ -130,9 +134,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                             DataDependency(group = this[0], artifact = this[1])
                                         })
                                     }
-                                    endArray()
+                                    if (peek() == JsonToken.END_ARRAY) endArray()
+                                    else throw IllegalManifestException("Illegal JSON in loadBefore section")
                                 } else
-                                    throw IllegalManifestException("Illegal dependencies section: $path")
+                                    throw IllegalManifestException("Illegal JSON in loadBefore section: $path")
                             }
                             "permissionPrefix" -> {
                                 if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal module permission prefix: $path")
@@ -214,9 +219,10 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                         }
                                         endpoints[endpoint] = endpointData
                                     }
-                                    endObject()
+                                    if (peek() == JsonToken.END_OBJECT) endObject()
+                                    else throw IllegalManifestException("Illegal JSON in authors section")
                                 } else
-                                    throw IllegalManifestException("Illegal endpoints section: $path")
+                                    throw IllegalManifestException("Illegal JSON in endpoints section: $path")
                             }
                             "permissions" -> {
                                 if (peek() == JsonToken.BEGIN_OBJECT) {
@@ -260,15 +266,17 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                                         } ?: throw IllegalManifestException("Illegal permission default: $path")
                                                     }
                                                 }
-                                                endObject()
+                                                if (peek() == JsonToken.END_OBJECT) endObject()
+                                                else throw IllegalManifestException("Illegal JSON in permissions section")
                                             } else
                                                 throw IllegalManifestException("Illegal permission node: $path")
                                         }
                                         permissions[permission] = permissionData
                                     }
-                                    endObject()
+                                    if (peek() == JsonToken.END_OBJECT) endObject()
+                                    else throw IllegalManifestException("Illegal JSON in permissions section")
                                 } else
-                                    throw IllegalManifestException("Illegal permissions section: $path")
+                                    throw IllegalManifestException("Illegal JSON in permissions section: $path")
                             }
                             else -> {
                                 if (peek() != JsonToken.NULL)
@@ -278,33 +286,175 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                     } else
                         throw IllegalManifestException("This section of the manifest does not start with a name: $path")
                 }
-                endObject()
-                DataModuleManifest(
-                        group = group,
-                        artifact = artifact,
-                        tag = tag,
-                        alias = alias,
-                        description = description,
-                        loadStage = loadStage,
-                        authors = authors,
-                        website = website,
-                        mainClass = mainClass,
-                        database = database,
-                        jarDependencies = jarDependencies,
-                        dependencies = dependencies,
-                        softDependencies = softDependencies,
-                        logPrefix = logPrefix,
-                        loadBefore = loadBefore,
-                        permissionPrefix = permissionPrefix,
-                        endpoints = endpoints,
-                        permissions = permissions,
-                        additionalProperties = additionalProperties
-                )
+                if (peek() == JsonToken.END_OBJECT) endObject()
+                else throw IllegalManifestException("Illegal JSON in main section")
             } else
                 throw IllegalManifestException("The manifest does not start with an object token \"{\"")
         }
     }
-    write { Json.serialize(this) }
+    write {
+        beginObject()
+
+        name("group")
+        value(it.group)
+
+        name("artifact")
+        value(it.artifact)
+
+        name("tag")
+        value(it.tag)
+
+        if (it.alias != null) {
+            name("alias")
+            value(it.alias)
+        }
+
+        if (it.description != null) {
+            name("description")
+            value(it.description)
+        }
+
+        name("loadStage")
+        value(it.loadStage.toString())
+
+        if (it.authors.isNotEmpty()) {
+            name("authors")
+            beginArray()
+            for (author in it.authors)
+                value(author)
+            endArray()
+        }
+
+        if (it.website != null) {
+            name("website")
+            value(it.website)
+        }
+
+        name("mainClass")
+        value(it.mainClass)
+
+        name("database")
+        value(it.database)
+
+        if (it.jarDependencies.isNotEmpty()) {
+            name("jarDependencies")
+            beginArray()
+            for (jarDependency in it.jarDependencies)
+                value("${jarDependency.groupId}:${jarDependency.artifactId}:${jarDependency.version}")
+            endArray()
+        }
+
+        if (it.dependencies.isNotEmpty()) {
+            name("dependencies")
+            beginArray()
+            for (dependency in it.dependencies)
+                value("${dependency.group}/${dependency.artifact}:${dependency.tag}")
+            endArray()
+        }
+
+        if (it.softDependencies.isNotEmpty()) {
+            name("softDependencies")
+            beginArray()
+            for (softDependency in it.softDependencies)
+                value("${softDependency.group}/${softDependency.artifact}:${softDependency.tag}")
+            endArray()
+        }
+
+        if (it.logPrefix != null) {
+            name("logPrefix")
+            value(it.logPrefix)
+        }
+
+        if (it.loadBefore.isNotEmpty()) {
+            name("loadBefore")
+            beginArray()
+            for (loadBefore in it.loadBefore)
+                value("${loadBefore.group}/${loadBefore.artifact}")
+            endArray()
+        }
+
+        if (it.permissionPrefix != null) {
+            name("permissionPrefix")
+            value(it.permissionPrefix)
+        }
+
+        if (it.endpoints.isNotEmpty()) {
+            name("endpoints")
+            beginObject()
+            for((endpoint, data) in it.endpoints) {
+                name(endpoint)
+                beginObject()
+                if (data.methods.isNotEmpty()) {
+                    name("methods")
+                    beginArray()
+                    for (method in data.methods)
+                        value(method.toString())
+                    endArray()
+                }
+                if (data.aliases.isNotEmpty()) {
+                    name("aliases")
+                    beginArray()
+                    for (alias in data.aliases)
+                        value(alias)
+                    endArray()
+                }
+                if (data.description != null) {
+                    name("description")
+                    value(data.description)
+                }
+                if (data.permissions.isNotEmpty()) {
+                    name("permissions")
+                    beginArray()
+                    for (permission in data.permissions)
+                        value(permission)
+                    endArray()
+                }
+
+                name("hidden")
+                value(data.hidden)
+
+                name("permissionMessage")
+                value(data.permissionMessage)
+
+                if (data.usage != null) {
+                    name("usage")
+                    value(data.usage)
+                }
+                endObject()
+            }
+            endObject()
+        }
+
+        if (it.permissions.isNotEmpty()) {
+            name("permissions")
+            beginObject()
+            for ((permission, data) in it.permissions) {
+                name(permission)
+                beginObject()
+                if (data.description != null) {
+                    name("description")
+                    value(data.description)
+                }
+                if (data.children != null && data.children?.isNotEmpty() == true) {
+                    name("children")
+                    beginObject()
+                    for ((child, inheritance) in data.children ?: emptyMap()) {
+                        name(child)
+                        value(inheritance)
+                    }
+                    endObject()
+                }
+
+                name("default")
+                value(data.default.toString())
+
+                endObject()
+            }
+            endObject()
+        }
+
+        endObject()
+    }
 }
 
 /**
