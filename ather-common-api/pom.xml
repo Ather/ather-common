@@ -86,6 +86,11 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.atherapp.common</groupId>
+            <artifactId>ather-common-modules</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
     <artifactId>ather-common-api</artifactId>
