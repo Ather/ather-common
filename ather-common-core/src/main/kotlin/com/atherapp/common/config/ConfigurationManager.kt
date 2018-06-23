@@ -1,12 +1,13 @@
 package com.atherapp.common.config
 
 import kotlin.reflect.KClass
+import kotlin.reflect.full.companionObjectInstance
 
 /**
  * Global configuration manager
  *
  * Configs are stored internally, and on the relevant file system (database or local)
- * They are accessed with the [] operator with a string config name passed as a key.
+ * They are accessed with the [] operator with a string config name, or a [ConfigurationKey] passed as a key.
  * These should be unique for each section of the config used
  */
 object ConfigurationManager {
@@ -32,15 +33,11 @@ object ConfigurationManager {
      */
     operator fun get(config: String, createNew: Boolean = true, newConfigClass: KClass<out BaseConfiguration>? = if (createNew) LocalConfiguration::class else null): BaseConfiguration? {
         // Return the config from the internal list, otherwise return a new config if createNew is true and the config class isn't null
-        return configs[config] ?: return if (createNew && newConfigClass != null) return try {
-            // Try to invoke the first constructor of the config class
-            newConfigClass.constructors.first().call(config).also {
-                // Add the new config to the internal config map
-                configs[config] = it
-            }
-        } catch (e: Exception) {
-            // The first constructor isn't single-arg, or another exception occurred, so return null
-            null
+        return configs[config] ?: return if (createNew && newConfigClass != null) {
+            val companion = newConfigClass.companionObjectInstance
+            return if (companion != null && companion is ConfigurationCompanion)
+                companion.newConfig(config)
+            else null
         } else null
     }
 
@@ -56,6 +53,17 @@ object ConfigurationManager {
     operator fun get(vararg configs: String) = UnionConfiguration(*configs.mapNotNull { this[it, false] }.toTypedArray())
 
     /**
+     * Get the config relating to a [ConfigurationKey].
+     * The usage of keys allows for easier control of config names
+     */
+    operator fun get(configKey: ConfigurationKey) = configs[configKey.name]
+
+    /**
+     * Get a [UnionConfiguration] for several [ConfigurationKey]s
+     */
+    operator fun get(vararg configKeys: ConfigurationKey) = UnionConfiguration(*configs.mapNotNull { this[it as ConfigurationKey] }.toTypedArray())
+
+    /**
      * Return a [UnionConfiguration] of all configs inside the manager
      */
     fun getAll() = UnionConfiguration(*configs.map { it.value }.toTypedArray())
@@ -66,4 +74,16 @@ object ConfigurationManager {
     //TODO Come up with a few default configs
     val DEFAULT_CONFIG
         get() = this["default", LocalConfiguration::class]
+}
+
+enum class DefaultConfigurationKey(name: String = this.toString().toLowerCase()) : ConfigurationKey {
+    DEFAULT,
+    ARGUMENT,
+    DATABASE,
+    MODULES,
+    PROVIDERS
+}
+
+interface ConfigurationKey {
+    val name: String
 }

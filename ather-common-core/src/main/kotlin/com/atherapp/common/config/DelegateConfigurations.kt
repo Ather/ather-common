@@ -19,6 +19,7 @@ class UpdateDelegate<T : Any?>(private val config: BaseConfiguration, private va
     }
 }
 
+/*
 class DatabaseConfiguration(val config: BaseConfiguration) : BaseConfiguration(), PersistentConfiguration by config {
 
     override fun get(key: String): JsonElement? = config[key]
@@ -50,4 +51,4 @@ class DatabaseConfiguration(val config: BaseConfiguration) : BaseConfiguration()
             config = DatabaseConfiguration(value)
         }
     }
-}
+}*/

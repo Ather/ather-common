@@ -8,6 +8,7 @@ import kotlinx.coroutines.experimental.channels.Channel
 import java.io.IOException
 import java.io.InputStream
 import java.time.Duration
+import java.util.*
 import javax.tools.FileObject
 
 /**
@@ -45,6 +46,30 @@ interface ProviderRegistrationInfo {
     fun config(str: String)
 }
 
+abstract class DefaultProviderRegistrationInfo(
+        override var name: String,
+        override var description: String,
+        override var options: Array<ProviderOption>
+) : ProviderRegistrationInfo {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DefaultProviderRegistrationInfo) return false
+
+        if (name != other.name) return false
+        if (description != other.description) return false
+        if (!Arrays.equals(options, other.options)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + Arrays.hashCode(options)
+        return result
+    }
+}
+
 /**
  * An option describes an option for the provider config
  */
@@ -53,12 +78,20 @@ interface ProviderOption {
 
     var help: String
 
-    var provider: String
+    var provider: String?
 
     var optional: Boolean
 
     var isPassword: Boolean
 }
+
+data class DefaultProviderOption(
+        override var name: String,
+        override var help: String,
+        override var provider: String? = null,
+        override var optional: Boolean = false,
+        override var isPassword: Boolean = false
+): ProviderOption
 
 /**
  * Provides a read-only interface for information about a [Provider]

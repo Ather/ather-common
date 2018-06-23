@@ -15,7 +15,7 @@ typealias EntryType = Int
 typealias ProviderTriple = Triple<ProviderRegistrationInfo, String, String>
 
 object FileProviders {
-    internal var registry: MutableList<ProviderRegistrationInfo> = mutableListOf()
+    internal var registry: MutableSet<ProviderRegistrationInfo> = mutableSetOf()
 
     /**
      * Used to match a provider URL

@@ -27,4 +27,4 @@ object DefaultModuleManager : PluginManager by moduleManager {
 /**
  * Simple extension method for any object to get modules of its type from the default module manager
  */
-inline fun <reified T : Any> T.modules(moduleId: String? = null) = DefaultModuleManager[this::class, moduleId]
+inline fun <reified T : Any> KClass<T>.modules(moduleId: String? = null) = DefaultModuleManager[this, moduleId]

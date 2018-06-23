@@ -5,13 +5,17 @@ import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
+import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import java.io.Reader
 import java.io.StringWriter
 import java.lang.reflect.Type
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
+import kotlin.reflect.KType
+import kotlin.reflect.jvm.javaType
 
 object Json {
     /**
@@ -56,7 +60,13 @@ object Json {
 
     fun <T> deserialize(jsonElem: JsonElement?, typeOfT: Type): T = gson.fromJson(jsonElem, typeOfT)
 
+    fun <T> deserialize(jsonReader: JsonReader?, typeOfT: Type): T = gson.fromJson(jsonReader, typeOfT)
+
     inline fun <reified T : Any> deserialize(json: String): T = gson.fromJson(json)
+
+    inline fun <reified T : Any> deserialize(jsonElem: JsonElement?): T = gson.fromJson(jsonElem, T::class.java)
+
+    inline fun <reified T : Any> deserialize(jsonReader: JsonReader?): T = gson.fromJson(jsonReader, T::class.java)
 
     fun registerAdapters(vararg typeAdapters: Pair<Type, Any>, retainAdapters: Boolean = true) = newGson(*typeAdapters, retainAdapters = retainAdapters)
 

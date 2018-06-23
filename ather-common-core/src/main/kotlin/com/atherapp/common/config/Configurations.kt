@@ -8,13 +8,26 @@ import com.google.gson.JsonObject
 interface Configuration {
     val configName: String
 
-    operator fun get(key: String): JsonElement?
+    operator fun get(key: String): ConfigurationElement?
+    
+    operator fun set(key: String, value: ConfigurationElement?)
 }
 
 interface PersistentConfiguration : Configuration {
+    val autoUpdate: Boolean
+
     fun load()
 
     fun save()
+}
+
+/**
+ * A basic interface used for Configurations that support construction.
+ * To support this functionality, simply make the configuration's
+ * companion object inherit this interface, and call the constructor of the configuration class
+ */
+interface ConfigurationCompanion {
+    fun newConfig(configName: String): BaseConfiguration
 }
 
 /**
@@ -29,8 +42,10 @@ interface PersistentConfiguration : Configuration {
  *
  * All implementing classes must have a single-arg constructor AS THE FIRST CONSTRUCTOR accepting only a config name to be properly supported by the [ConfigurationManager]
  */
-abstract class BaseConfiguration: PersistentConfiguration {
+abstract class BaseConfiguration : PersistentConfiguration {
     abstract override val configName: String
+
+    override var autoUpdate: Boolean = true
 
     lateinit var json: JsonObject
 
@@ -42,14 +57,15 @@ abstract class BaseConfiguration: PersistentConfiguration {
      * Get the JsonElement at the given key, or null if it doesn't exist
      * TODO Support default values, perhaps with an elvis operator calling a default json object
      */
-    override operator fun get(key: String): JsonElement? = json[key]
+    override operator fun get(key: String): ConfigurationElement? = DefaultConfigurationElement(this, json[key])
 
     /**
      * Set the value at the given key to the nullable [JsonElement]
      */
-    open operator fun set(key: String, value: JsonElement?) {
+    override operator fun set(key: String, value: ConfigurationElement?) {
         json[key] = value
-        this.save()
+        if (autoUpdate)
+            this.save()
     }
 
     /**
@@ -84,7 +100,7 @@ class UnionConfiguration(
     /**
      * Return the first matching value inside the union
      */
-    override operator fun get(key: String): JsonElement? {
+    override operator fun get(key: String): ConfigurationElement? {
         for (config in configs) {
             val confVal = config[key]
             if (confVal != null)
@@ -102,12 +118,13 @@ class UnionConfiguration(
     /**
      * Update a value inside a config. This only works for updating values, not creating new values.
      */
-    override operator fun set(key: String, value: JsonElement?) {
+    override operator fun set(key: String, value: ConfigurationElement?) {
         for (config in configs) {
             val confVal = config[key]
             if (confVal != null) {
                 config[key] = value
-                config.save()
+                if (autoUpdate)
+                    config.save()
             }
         }
     }
@@ -115,11 +132,12 @@ class UnionConfiguration(
     /**
      * Update or set a value inside a specified config.
      */
-    operator fun set(configName: String, key: String, value: JsonElement?) {
+    operator fun set(configName: String, key: String, value: ConfigurationElement?) {
         val config = configs.find { it.configName == configName }
         if (config != null) {
             config[key] = value
-            config.save()
+            if (autoUpdate)
+                config.save()
         }
 
     }
@@ -134,6 +152,11 @@ class UnionConfiguration(
     fun save(configName: String) {
         configs.find { it.configName == configName }?.save()
     }
+
+    /**
+     * Save a specific config using a [ConfigurationKey]
+     */
+    fun save(configKey: ConfigurationKey) = save(configKey.name)
 
     /**
      * Save all configs in the union
@@ -159,6 +182,10 @@ class LocalConfiguration(
     override fun save() {
         TODO("not implemented")
     }
+
+    companion object: ConfigurationCompanion {
+        override fun newConfig(configName: String): LocalConfiguration = LocalConfiguration(configName)
+    }
 }
 
 /**
@@ -168,7 +195,7 @@ class LocalConfiguration(
  * TODO Consider that this will have to assume a local configuration exists to get database info
  *
 class DatabaseConfiguration(
-        override val configName: String,
-        //TODO Use default database profile
-        val databaseProfile: String = ConfigurationManager
+override val configName: String,
+//TODO Use default database profile
+val databaseProfile: String = ConfigurationManager
 ) : BaseConfiguration()*/
