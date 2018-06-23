@@ -12,6 +12,11 @@ interface ModuleWrapper {
     var moduleState: ModuleState
     //var runtimeMode: RuntimeMode
 
+    //TODO Change Any to a proper dependency item
+    val exclusiveJarDependencies: List<Any>
+
+    val exclusiveModuleDependencies: List<Any>
+
     val module: Module
 
     val moduleId

@@ -5,7 +5,7 @@ import mu.KLogging
 /**
  * Basic Module which loads additional functionality at runtime
  */
-interface Module {
+interface Module : ModuleWrapper {
     val wrapper: ModuleWrapper
 
     fun start()
@@ -13,6 +13,8 @@ interface Module {
     fun stop()
 }
 
-abstract class BaseModule : Module {
+abstract class BaseModule(
+        override val wrapper: ModuleWrapper
+) : Module, ModuleWrapper by wrapper {
     companion object : KLogging()
 }

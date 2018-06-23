@@ -44,7 +44,7 @@ val moduleManifestTypeAdapter = typeAdapter<ModuleManifest> {
                                 if (peek() != JsonToken.STRING && peek() != JsonToken.NULL) throw IllegalManifestException("Illegal load stage, must be a string or null: $path")
                                 loadStage = nextStringOrNull()?.let {
                                     try {
-                                        ModuleLoadStage.valueOf(it)
+                                        ModuleLoadStage.valueOf(it.toUpperCase())
                                     } catch (e: IllegalArgumentException) {
                                         throw IllegalManifestException("Illegal load stage: $path")
                                     }
